@@ -1,0 +1,51 @@
+---
+#
+# This is the canonical configuration for the `README.md`
+# Run `make readme` to rebuild the `README.md`
+#
+
+# Name of this project
+name: terraform-aws-mq-broker
+
+# Logo for this project
+#logo: docs/logo.png
+
+# License of this project
+license: "APACHE2"
+
+# Canonical GitHub repo
+github_repo: cloudposse/terraform-aws-mq-broker
+
+# Badges to display
+badges:
+  - name: "Build Status"
+    image: "https://travis-ci.org/cloudposse/terraform-aws-mq-broker.svg?branch=master"
+    url: "https://travis-ci.org/cloudposse/terraform-aws-mq-broker"
+  - name: "Latest Release"
+    image: "https://img.shields.io/github/release/cloudposse/terraform-aws-mq-broker.svg"
+    url: "https://github.com/cloudposse/terraform-aws-mq-broker/releases/latest"
+  - name: "Slack Community"
+    image: "https://slack.cloudposse.com/badge.svg"
+    url: "https://slack.cloudposse.com"
+
+related:
+
+# Short description of this project
+description: |-
+  Terraform module to provision AmazonMQ resources on AWS
+
+introduction: |-
+  TODO
+
+# How to use this project
+usage: |-
+  TODO
+
+include:
+  - "docs/targets.md"
+  - "docs/terraform.md"
+
+# Contributors to this project
+contributors:
+  - name: "Josh Myers"
+    github: "joshmyers"
