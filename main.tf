@@ -10,8 +10,13 @@ module "label" {
 }
 
 locals {
-  enabled              = "${var.enabled == "true" ? true : false}"
-  config_template_path = "${length(var.config_template_path) > 0 ? var.config_template_path : format("%s/templates/config.xml", path.module)}"
+  enabled                 = "${var.enabled == "true" ? true : false}"
+  kms_key_id              = "${length(var.kms_key_id) > 0 ? var.kms_key_id : format("alias/%s-%s-chamber", var.namespace, var.stage)}"
+  chamber_service         = "${var.chamber_service == "" ? basename(pathexpand(path.module)) : var.chamber_service}"
+  mq_admin_user           = "${length(var.mq_admin_user) > 0 ? var.mq_admin_user : join("", random_string.mq_admin_user.*.result)}"
+  mq_admin_password       = "${length(var.mq_admin_password) > 0 ? var.mq_admin_password : join("", random_string.mq_admin_password.*.result)}"
+  mq_application_user     = "${length(var.mq_application_user) > 0 ? var.mq_application_user : join("", random_string.mq_application_user.*.result)}"
+  mq_application_password = "${length(var.mq_application_password) > 0 ? var.mq_application_password : join("", random_string.mq_application_password.*.result)}"
 }
 
 data "aws_kms_key" "chamber_kms_key" {
@@ -19,23 +24,73 @@ data "aws_kms_key" "chamber_kms_key" {
   key_id = "${local.kms_key_id}"
 }
 
-resource "aws_mq_configuration" "default" {
-  count          = "${local.enabled ? 1 : 0}"
-  name           = "${module.label.id}-${var.configuration_name}"
-  engine_type    = "${var.engine_type}"
-  engine_version = "${var.engine_version}"
-  data           = "${data.template_file.default.rendered}"
+resource "random_string" "mq_admin_user" {
+  count   = "${local.enabled ? 1 : 0}"
+  length  = 8
+  special = false
+  number  = false
+}
+
+resource "random_string" "mq_admin_password" {
+  count   = "${local.enabled ? 1 : 0}"
+  length  = 16
+  special = false
+}
+
+resource "random_string" "mq_application_user" {
+  count   = "${local.enabled ? 1 : 0}"
+  length  = 8
+  special = false
+  number  = false
+}
+
+resource "random_string" "mq_application_password" {
+  count   = "${local.enabled ? 1 : 0}"
+  length  = 16
+  special = false
+}
+
+resource "aws_ssm_parameter" "mq_master_username" {
+  count       = "${local.enabled ? 1 : 0}"
+  name        = "${format(var.chamber_parameter_name, local.chamber_service, "mq_admin_username")}"
+  value       = "${local.mq_admin_user}"
+  description = "MQ Username for the master user"
+  type        = "String"
+  overwrite   = "${var.overwrite_ssm_parameter}"
+}
+
+resource "aws_ssm_parameter" "mq_master_password" {
+  count       = "${local.enabled ? 1 : 0}"
+  name        = "${format(var.chamber_parameter_name, local.chamber_service, "mq_admin_password")}"
+  value       = "${local.mq_admin_password}"
+  description = "MQ Password for the master user"
+  type        = "SecureString"
+  key_id      = "${data.aws_kms_key.chamber_kms_key.id}"
+  overwrite   = "${var.overwrite_ssm_parameter}"
+}
+
+resource "aws_ssm_parameter" "mq_application_username" {
+  count       = "${local.enabled ? 1 : 0}"
+  name        = "${format(var.chamber_parameter_name, local.chamber_service, "mq_application_username")}"
+  value       = "${local.mq_application_user}"
+  description = "AMQ username for the application user"
+  type        = "String"
+  overwrite   = "${var.overwrite_ssm_parameter}"
+}
+
+resource "aws_ssm_parameter" "mq_application_password" {
+  count       = "${local.enabled ? 1 : 0}"
+  name        = "${format(var.chamber_parameter_name, local.chamber_service, "mq_application_password")}"
+  value       = "${local.mq_application_password}"
+  description = "AMQ password for the application user"
+  type        = "SecureString"
+  key_id      = "${data.aws_kms_key.chamber_kms_key.id}"
+  overwrite   = "${var.overwrite_ssm_parameter}"
 }
 
 resource "aws_mq_broker" "default" {
-  count       = "${local.enabled ? 1 : 0}"
-  broker_name = "${module.label.id}-${var.broker_name}"
-
-  configuration {
-    id       = "${join("", aws_mq_configuration.default.*.id)}"
-    revision = "${join("", aws_mq_configuration.default.*.latest_revision)}"
-  }
-
+  count                      = "${local.enabled ? 1 : 0}"
+  broker_name                = "${module.label.id}-${var.broker_name}"
   deployment_mode            = "${var.deployment_mode}"
   engine_type                = "${var.engine_type}"
   engine_version             = "${var.engine_version}"
@@ -57,7 +112,17 @@ resource "aws_mq_broker" "default" {
     time_zone   = "${var.maintenance_time_zone}"
   }
 
-  user = "${var.users}"
+  user = [{
+    "username"       = "${local.mq_admin_user}"
+    "password"       = "${local.mq_admin_password}"
+    "groups"         = ["admin"]
+    "console_access" = true
+  }]
+
+  user = [{
+    "username" = "${local.mq_application_user}"
+    "password" = "${local.mq_application_password}"
+  }]
 }
 
 resource "aws_security_group" "default" {

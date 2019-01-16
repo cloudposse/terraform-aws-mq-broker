@@ -61,3 +61,11 @@ output "secondary_wss_endpoint" {
 output "secondary_ip_address" {
   value = "${element(concat(aws_mq_broker.default.*.instances.1.ip_address, list("")), 0)}"
 }
+
+output "admin_username" {
+  value = "${local.mq_admin_user}"
+}
+
+output "application_username" {
+  value = "${local.mq_application_user}"
+}
