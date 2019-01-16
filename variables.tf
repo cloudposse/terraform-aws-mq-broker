@@ -40,12 +40,6 @@ variable "engine_version" {
   default     = "5.15.0"
 }
 
-variable "configuration_name" {
-  type        = "string"
-  description = "The name of the MQ configuration"
-  default     = "mq"
-}
-
 variable "host_instance_type" {
   type        = "string"
   description = "The broker's instance type. e.g. mq.t2.micro or mq.m4.large"
@@ -88,22 +82,28 @@ variable "maintenance_time_zone" {
   default     = "UTC"
 }
 
-variable "config_template_path" {
+variable "mq_admin_user" {
   type        = "string"
-  description = "Path to ActiveMQ XML config"
+  description = "Admin username"
   default     = ""
 }
 
-# https://www.terraform.io/docs/providers/aws/r/mq_broker.html#user
-variable "users" {
-  type        = "list"
-  description = "List of maps of users"
-  default     = [{
-    "username"       = "admin"
-    "password"       = "defaultpassword"
-    "groups"         = ["admin"]
-    "console_access" = true
-  }]
+variable "mq_admin_password" {
+  type        = "string"
+  description = "Admin password"
+  default     = ""
+}
+
+variable "mq_application_user" {
+  type        = "string"
+  description = "Application username"
+  default     = ""
+}
+
+variable "mq_application_password" {
+  type        = "string"
+  description = "Application password"
+  default     = ""
 }
 
 variable "security_groups" {
