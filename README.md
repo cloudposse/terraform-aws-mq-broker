@@ -20,6 +20,8 @@ This project is part of our comprehensive ["SweetOps"](https://cpco.io/sweetops)
 [<img align="right" title="Share on Twitter" src="https://docs.cloudposse.com/images/ionicons/social-twitter-outline-2.0.1-16x16-999999.svg" />][share_twitter]
 
 
+[![Terraform Open Source Modules](https://docs.cloudposse.com/images/terraform-open-source-modules.svg)][terraform_modules]
+
 
 
 It's 100% Open Source and licensed under the [APACHE2](LICENSE).
@@ -30,6 +32,8 @@ It's 100% Open Source and licensed under the [APACHE2](LICENSE).
 
 
 
+We literally have [*hundreds of terraform modules*][terraform_modules] that are Open Source and well-maintained. Check them out! 
+
 
 
 
@@ -37,11 +41,41 @@ It's 100% Open Source and licensed under the [APACHE2](LICENSE).
 
 ## Introduction
 
-TODO
+This module provisions the following resources:
+  - ActiveMQ broker
+  - Security group rules to allow access to the broker
+
+Admin and application users are created and credentials written to SSM if not passed in as variables.
 
 ## Usage
 
-TODO
+```terraform
+module "amq" {
+  source                     = "git::https://github.com/cloudposse/terraform-aws-mq-broker.git?ref=tags/0.1.0"
+  namespace                  = "${var.namespace}"
+  stage                      = "${var.stage}"
+  name                       = "${var.name}"
+  broker_name                = "${var.mq_broker_name}"
+  apply_immediately          = "${var.mq_apply_immediately}"
+  enabled                    = "${var.mq_enabled}"
+  auto_minor_version_upgrade = "${var.mq_auto_minor_version_upgrade}"
+  deployment_mode            = "${var.mq_deployment_mode}"
+  engine_type                = "${var.mq_engine_type}"
+  engine_version             = "${var.mq_engine_version}"
+  configuration_name         = "${var.mq_configuration_name}"
+  host_instance_type         = "${var.mq_host_instance_type}"
+  publicly_accessible        = "${var.mq_publicly_accessible}"
+  general_log                = "${var.mq_general_log}"
+  audit_log                  = "${var.mq_audit_log}"
+  maintenance_day_of_week    = "${var.mq_maintenance_day_of_week}"
+  maintenance_time_of_day    = "${var.mq_maintenance_time_of_day}"
+  maintenance_time_zone      = "${var.mq_maintenance_time_zone}"
+  config_template_path       = "${var.mq_config_template_path}"
+  vpc_id                     = "${var.vpc_id}"
+  subnet_ids                 = ["${var.mq_subnet_ids}"]
+  security_groups            = ["${var.node_security_groups}"]
+}
+```
 
 
 
@@ -59,6 +93,65 @@ Available targets:
 
 ```
 
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| apply_immediately | Specifies whether any cluster modifications are applied immediately, or during the next maintenance window | string | `false` | no |
+| attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
+| audit_log | Enables audit logging. User management action made using JMX or the ActiveMQ Web Console is logged | string | `true` | no |
+| auto_minor_version_upgrade | Enables automatic upgrades to new minor versions for brokers, as Apache releases the versions | string | `false` | no |
+| broker_name | The name of the broker | string | `mq` | no |
+| chamber_parameter_name | Format to store parameters in SSM, for consumption with chamber | string | `/%s/%s` | no |
+| chamber_service | SSM parameter service name for use with chamber. This is used in chamber_format where /$chamber_service/$parameter would be the default. | string | `` | no |
+| delimiter | Delimiter to be used between `name`, `namespace`, `stage` and `attributes` | string | `-` | no |
+| deployment_mode | The deployment mode of the broker. Supported: SINGLE_INSTANCE and ACTIVE_STANDBY_MULTI_AZ | string | `ACTIVE_STANDBY_MULTI_AZ` | no |
+| enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
+| engine_type | The type of broker engine. Currently, Amazon MQ supports only ActiveMQ | string | `ActiveMQ` | no |
+| engine_version | The version of the broker engine. Currently, Amazon MQ supports only 5.15.0 or 5.15.6. | string | `5.15.0` | no |
+| general_log | Enables general logging via CloudWatch | string | `true` | no |
+| host_instance_type | The broker's instance type. e.g. mq.t2.micro or mq.m4.large | string | `mq.t2.micro` | no |
+| kms_key_id | KMS key id used to encrypt SSM parameters | string | `` | no |
+| maintenance_day_of_week | The day of the week. e.g. MONDAY, TUESDAY, or WEDNESDAY | string | `SUNDAY` | no |
+| maintenance_time_of_day | The time, in 24-hour format. e.g. 02:00 | string | `03:00` | no |
+| maintenance_time_zone | The time zone, in either the Country/City format, or the UTC offset format. e.g. CET | string | `UTC` | no |
+| mq_admin_password | Admin password | string | `` | no |
+| mq_admin_user | Admin username | string | `` | no |
+| mq_application_password | Application password | string | `` | no |
+| mq_application_user | Application username | string | `` | no |
+| name | Name of the application | string | - | yes |
+| namespace | Namespace (e.g. `eg` or `cp`) | string | - | yes |
+| overwrite_ssm_parameter | Whether to overwrite an existing SSM parameter | string | `true` | no |
+| publicly_accessible | Whether to enable connections from applications outside of the VPC that hosts the broker's subnets. | string | `false` | no |
+| security_groups | List of security groups to be allowed to connect to the ActiveMQ instance | list | `<list>` | no |
+| stage | Stage (e.g. `prod`, `dev`, `staging`) | string | - | yes |
+| subnet_ids | List of VPC subnet IDs | list | - | yes |
+| tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`) | map | `<map>` | no |
+| vpc_id | VPC ID to create the cluster in (e.g. `vpc-a22222ee`) | string | - | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| admin_username |  |
+| application_username |  |
+| broker_arn |  |
+| broker_id |  |
+| primary_ampq_ssl_endpoint |  |
+| primary_console_url |  |
+| primary_ip_address |  |
+| primary_mqtt_ssl_endpoint |  |
+| primary_ssl_endpoint |  |
+| primary_stomp_ssl_endpoint |  |
+| primary_wss_endpoint |  |
+| secondary_ampq_ssl_endpoint |  |
+| secondary_console_url |  |
+| secondary_ip_address |  |
+| secondary_mqtt_ssl_endpoint |  |
+| secondary_ssl_endpoint |  |
+| secondary_stomp_ssl_endpoint |  |
+| secondary_wss_endpoint |  |
+
 
 
 
@@ -73,6 +166,7 @@ Are you using this project or any of our other projects? Consider [leaving a tes
 
 Check out these related projects.
 
+- [terraform-aws-codefresh-backing-services](https://github.com/cloudposse/terraform-aws-codefresh-backing-services) - Terraform module to provision CodeFresh Enterprise backing services
 
 
 
@@ -101,6 +195,10 @@ We provide [*commercial support*][commercial_support] for all of our [Open Sourc
 - **Implementation.** We'll provide hands-on support to implement our reference architectures. 
 
 
+
+## Terraform Module Development
+
+Are you interested in custom Terraform module development? Submit your inquiry using [our form][module_development] today and we'll get back to you ASAP.
 
 
 ## Slack Community
