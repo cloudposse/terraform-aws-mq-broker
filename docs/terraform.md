@@ -7,7 +7,6 @@
 | attributes | Additional attributes (e.g. `1`) | list | `<list>` | no |
 | audit_log | Enables audit logging. User management action made using JMX or the ActiveMQ Web Console is logged | string | `true` | no |
 | auto_minor_version_upgrade | Enables automatic upgrades to new minor versions for brokers, as Apache releases the versions | string | `false` | no |
-| broker_name | The name of the broker | string | `mq` | no |
 | chamber_parameter_name | Format to store parameters in SSM, for consumption with chamber | string | `/%s/%s` | no |
 | chamber_service | SSM parameter service name for use with chamber. This is used in chamber_format where /$chamber_service/$parameter would be the default. | string | `` | no |
 | delimiter | Delimiter to be used between `name`, `namespace`, `stage` and `attributes` | string | `-` | no |
@@ -17,10 +16,10 @@
 | engine_version | The version of the broker engine. Currently, Amazon MQ supports only 5.15.0 or 5.15.6. | string | `5.15.0` | no |
 | general_log | Enables general logging via CloudWatch | string | `true` | no |
 | host_instance_type | The broker's instance type. e.g. mq.t2.micro or mq.m4.large | string | `mq.t2.micro` | no |
-| kms_key_id | KMS key id used to encrypt SSM parameters | string | `` | no |
-| maintenance_day_of_week | The day of the week. e.g. MONDAY, TUESDAY, or WEDNESDAY | string | `SUNDAY` | no |
-| maintenance_time_of_day | The time, in 24-hour format. e.g. 02:00 | string | `03:00` | no |
-| maintenance_time_zone | The time zone, in either the Country/City format, or the UTC offset format. e.g. CET | string | `UTC` | no |
+| kms_key_id | KMS key ID used to encrypt SSM parameters | string | `` | no |
+| maintenance_day_of_week | The maintenance day of the week. e.g. MONDAY, TUESDAY, or WEDNESDAY | string | `SUNDAY` | no |
+| maintenance_time_of_day | The maintenance time, in 24-hour format. e.g. 02:00 | string | `03:00` | no |
+| maintenance_time_zone | The maintenance time zone, in either the Country/City format, or the UTC offset format. e.g. CET | string | `UTC` | no |
 | mq_admin_password | Admin password | string | `` | no |
 | mq_admin_user | Admin username | string | `` | no |
 | mq_application_password | Application password | string | `` | no |
@@ -39,22 +38,22 @@
 
 | Name | Description |
 |------|-------------|
-| admin_username |  |
-| application_username |  |
-| broker_arn |  |
-| broker_id |  |
-| primary_ampq_ssl_endpoint |  |
-| primary_console_url |  |
-| primary_ip_address |  |
-| primary_mqtt_ssl_endpoint |  |
-| primary_ssl_endpoint |  |
-| primary_stomp_ssl_endpoint |  |
-| primary_wss_endpoint |  |
-| secondary_ampq_ssl_endpoint |  |
-| secondary_console_url |  |
-| secondary_ip_address |  |
-| secondary_mqtt_ssl_endpoint |  |
-| secondary_ssl_endpoint |  |
-| secondary_stomp_ssl_endpoint |  |
-| secondary_wss_endpoint |  |
+| admin_username | AmazonMQ admin username |
+| application_username | AmazonMQ application username |
+| broker_arn | The AmazonMQ broker ARN |
+| broker_id | The AmazonMQ broker ID |
+| primary_amqp_ssl_endpoint | AmazonMQ primary AMQP+SSL endpoint |
+| primary_console_url | AmazonMQ active web console URL |
+| primary_ip_address | AmazonMQ primary IP address |
+| primary_mqtt_ssl_endpoint | AmazonMQ primary MQTT+SSL endpoint |
+| primary_ssl_endpoint | AmazonMQ primary SSL endpoint |
+| primary_stomp_ssl_endpoint | AmazonMQ primary STOMP+SSL endpoint |
+| primary_wss_endpoint | AmazonMQ primary WSS endpoint |
+| secondary_amqp_ssl_endpoint | AmazonMQ secondary AMQP+SSL endpoint |
+| secondary_console_url | AmazonMQ secondary web console URL |
+| secondary_ip_address | AmazonMQ secondary IP address |
+| secondary_mqtt_ssl_endpoint | AmazonMQ secondary MQTT+SSL endpoint |
+| secondary_ssl_endpoint | AmazonMQ secondary SSL endpoint |
+| secondary_stomp_ssl_endpoint | AmazonMQ secondary STOMP+SSL endpoint |
+| secondary_wss_endpoint | AmazonMQ secondary WSS endpoint |
 
