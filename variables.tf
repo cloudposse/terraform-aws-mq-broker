@@ -178,3 +178,8 @@ variable "kms_key_id" {
   default     = ""
   description = "KMS key id used to encrypt SSM parameters"
 }
+
+variable "users" {
+  type = "list"
+  default = []
+}
