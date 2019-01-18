@@ -91,7 +91,7 @@ resource "aws_ssm_parameter" "mq_application_password" {
 
 resource "aws_mq_broker" "default" {
   count                      = "${local.enabled ? 1 : 0}"
-  broker_name                = "${module.label.id}-${var.broker_name}"
+  broker_name                = "${module.label.id}"
   deployment_mode            = "${var.deployment_mode}"
   engine_type                = "${var.engine_type}"
   engine_version             = "${var.engine_version}"
@@ -129,7 +129,7 @@ resource "aws_mq_broker" "default" {
 resource "aws_security_group" "default" {
   count  = "${local.enabled ? 1 : 0}"
   vpc_id = "${var.vpc_id}"
-  name   = "${module.label.id}-${var.broker_name}"
+  name   = "${module.label.id}"
   tags   = "${module.label.tags}"
 }
 
