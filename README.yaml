@@ -29,17 +29,50 @@ badges:
     url: "https://slack.cloudposse.com"
 
 related:
+  - name: "terraform-aws-codefresh-backing-services"
+    description: "Terraform module to provision CodeFresh Enterprise backing services"
+    url: "https://github.com/cloudposse/terraform-aws-codefresh-backing-services"
 
 # Short description of this project
 description: |-
   Terraform module to provision AmazonMQ resources on AWS
 
 introduction: |-
-  TODO
+  This module provisions the following resources:
+    - ActiveMQ broker
+    - Security group rules to allow access to the broker
+
+  Admin and application users are created and credentials written to SSM if not passed in as variables.
 
 # How to use this project
 usage: |-
-  TODO
+  ```terraform
+  module "amq" {
+    source                     = "git::https://github.com/cloudposse/terraform-aws-mq-broker.git?ref=master"
+    enabled                    = "${var.mq_enabled}"
+    namespace                  = "${var.namespace}"
+    stage                      = "${var.stage}"
+    name                       = "${var.name}"
+    broker_name                = "${var.mq_broker_name}"
+    apply_immediately          = "${var.mq_apply_immediately}"
+    auto_minor_version_upgrade = "${var.mq_auto_minor_version_upgrade}"
+    deployment_mode            = "${var.mq_deployment_mode}"
+    engine_type                = "${var.mq_engine_type}"
+    engine_version             = "${var.mq_engine_version}"
+    configuration_name         = "${var.mq_configuration_name}"
+    host_instance_type         = "${var.mq_host_instance_type}"
+    publicly_accessible        = "${var.mq_publicly_accessible}"
+    general_log                = "${var.mq_general_log}"
+    audit_log                  = "${var.mq_audit_log}"
+    maintenance_day_of_week    = "${var.mq_maintenance_day_of_week}"
+    maintenance_time_of_day    = "${var.mq_maintenance_time_of_day}"
+    maintenance_time_zone      = "${var.mq_maintenance_time_zone}"
+    config_template_path       = "${var.mq_config_template_path}"
+    vpc_id                     = "${var.vpc_id}"
+    subnet_ids                 = ["${var.mq_subnet_ids}"]
+    security_groups            = ["${var.node_security_groups}"]
+  }
+  ```
 
 include:
   - "docs/targets.md"
