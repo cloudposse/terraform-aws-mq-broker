@@ -12,6 +12,7 @@ module "label" {
 locals {
   enabled                 = "${var.enabled == "true" ? true : false}"
   kms_key_id              = "${length(var.kms_key_id) > 0 ? var.kms_key_id : format("alias/%s-%s-chamber", var.namespace, var.stage)}"
+  key_id                  = "${join("", data.aws_kms_key.chamber_kms_key.*.id)}"
   chamber_service         = "${var.chamber_service == "" ? basename(pathexpand(path.module)) : var.chamber_service}"
   mq_admin_user           = "${length(var.mq_admin_user) > 0 ? var.mq_admin_user : join("", random_string.mq_admin_user.*.result)}"
   mq_admin_password       = "${length(var.mq_admin_password) > 0 ? var.mq_admin_password : join("", random_string.mq_admin_password.*.result)}"
@@ -65,7 +66,7 @@ resource "aws_ssm_parameter" "mq_master_password" {
   value       = "${local.mq_admin_password}"
   description = "MQ Password for the master user"
   type        = "SecureString"
-  key_id      = "${join("", data.aws_kms_key.chamber_kms_key.*.id)}"
+  key_id      = "${local.key_id}"
   overwrite   = "${var.overwrite_ssm_parameter}"
 }
 
@@ -84,7 +85,7 @@ resource "aws_ssm_parameter" "mq_application_password" {
   value       = "${local.mq_application_password}"
   description = "AMQ password for the application user"
   type        = "SecureString"
-  key_id      = "${join("", data.aws_kms_key.chamber_kms_key.*.id)}"
+  key_id      = "${local.key_id}"
   overwrite   = "${var.overwrite_ssm_parameter}"
 }
 
