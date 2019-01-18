@@ -53,7 +53,6 @@ usage: |-
     namespace                  = "${var.namespace}"
     stage                      = "${var.stage}"
     name                       = "${var.name}"
-    broker_name                = "${var.mq_broker_name}"
     apply_immediately          = "${var.mq_apply_immediately}"
     auto_minor_version_upgrade = "${var.mq_auto_minor_version_upgrade}"
     deployment_mode            = "${var.mq_deployment_mode}"
