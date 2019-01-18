@@ -1,7 +1,7 @@
 variable "apply_immediately" {
   type        = "string"
-  description = "Specifies whether any cluster modifications are applied immediately, or during the next maintenance window"
   default     = "false"
+  description = "Specifies whether any cluster modifications are applied immediately, or during the next maintenance window"
 }
 
 variable "enabled" {
@@ -12,104 +12,98 @@ variable "enabled" {
 
 variable "auto_minor_version_upgrade" {
   type        = "string"
-  description = "Enables automatic upgrades to new minor versions for brokers, as Apache releases the versions"
   default     = "false"
-}
-
-variable "broker_name" {
-  type        = "string"
-  description = "The name of the broker"
-  default     = "mq"
+  description = "Enables automatic upgrades to new minor versions for brokers, as Apache releases the versions"
 }
 
 variable "deployment_mode" {
   type        = "string"
-  description = "The deployment mode of the broker. Supported: SINGLE_INSTANCE and ACTIVE_STANDBY_MULTI_AZ"
   default     = "ACTIVE_STANDBY_MULTI_AZ"
+  description = "The deployment mode of the broker. Supported: SINGLE_INSTANCE and ACTIVE_STANDBY_MULTI_AZ"
 }
 
 variable "engine_type" {
   type        = "string"
-  description = "The type of broker engine. Currently, Amazon MQ supports only ActiveMQ"
   default     = "ActiveMQ"
+  description = "The type of broker engine. Currently, Amazon MQ supports only ActiveMQ"
 }
 
 variable "engine_version" {
   type        = "string"
-  description = "The version of the broker engine. Currently, Amazon MQ supports only 5.15.0 or 5.15.6."
   default     = "5.15.0"
+  description = "The version of the broker engine. Currently, Amazon MQ supports only 5.15.0 or 5.15.6."
 }
 
 variable "host_instance_type" {
   type        = "string"
-  description = "The broker's instance type. e.g. mq.t2.micro or mq.m4.large"
   default     = "mq.t2.micro"
+  description = "The broker's instance type. e.g. mq.t2.micro or mq.m4.large"
 }
 
 variable "publicly_accessible" {
   type        = "string"
-  description = "Whether to enable connections from applications outside of the VPC that hosts the broker's subnets."
   default     = "false"
+  description = "Whether to enable connections from applications outside of the VPC that hosts the broker's subnets."
 }
 
 variable "general_log" {
   type        = "string"
-  description = "Enables general logging via CloudWatch"
   default     = "true"
+  description = "Enables general logging via CloudWatch"
 }
 
 variable "audit_log" {
   type        = "string"
-  description = "Enables audit logging. User management action made using JMX or the ActiveMQ Web Console is logged"
   default     = "true"
+  description = "Enables audit logging. User management action made using JMX or the ActiveMQ Web Console is logged"
 }
 
 variable "maintenance_day_of_week" {
   type        = "string"
-  description = "The maintenance day of the week. e.g. MONDAY, TUESDAY, or WEDNESDAY"
   default     = "SUNDAY"
+  description = "The maintenance day of the week. e.g. MONDAY, TUESDAY, or WEDNESDAY"
 }
 
 variable "maintenance_time_of_day" {
   type        = "string"
-  description = "The maintenance time, in 24-hour format. e.g. 02:00"
   default     = "03:00"
+  description = "The maintenance time, in 24-hour format. e.g. 02:00"
 }
 
 variable "maintenance_time_zone" {
   type        = "string"
-  description = "The maintenance time zone, in either the Country/City format, or the UTC offset format. e.g. CET"
   default     = "UTC"
+  description = "The maintenance time zone, in either the Country/City format, or the UTC offset format. e.g. CET"
 }
 
 variable "mq_admin_user" {
   type        = "string"
-  description = "Admin username"
   default     = ""
+  description = "Admin username"
 }
 
 variable "mq_admin_password" {
   type        = "string"
-  description = "Admin password"
   default     = ""
+  description = "Admin password"
 }
 
 variable "mq_application_user" {
   type        = "string"
-  description = "Application username"
   default     = ""
+  description = "Application username"
 }
 
 variable "mq_application_password" {
   type        = "string"
-  description = "Application password"
   default     = ""
+  description = "Application password"
 }
 
 variable "security_groups" {
   type        = "list"
-  default     = []
   description = "List of security groups to be allowed to connect to the ActiveMQ instance"
+  default     = []
 }
 
 variable "vpc_id" {
