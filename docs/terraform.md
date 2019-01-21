@@ -40,8 +40,8 @@
 |------|-------------|
 | admin_username | AmazonMQ admin username |
 | application_username | AmazonMQ application username |
-| broker_arn | The AmazonMQ broker ARN |
-| broker_id | The AmazonMQ broker ID |
+| broker_arn | AmazonMQ broker ARN |
+| broker_id | AmazonMQ broker ID |
 | primary_amqp_ssl_endpoint | AmazonMQ primary AMQP+SSL endpoint |
 | primary_console_url | AmazonMQ active web console URL |
 | primary_ip_address | AmazonMQ primary IP address |
