@@ -3,7 +3,7 @@ version: '1.0'
 steps:
   test:
     title: Terraform module test
-    image: r.cfcr.io/cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
+    image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     working_directory: /
     commands:
     - make init
