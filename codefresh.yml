@@ -1,0 +1,22 @@
+version: '1.0'
+
+steps:
+  init_variables:
+    title: Init variables
+    image: alpine
+    commands:
+    - cf_export TESTING_CLOUDPOSSE_CO_VERSION=tests
+
+  test:
+    title: Terraform module test
+    image: r.cfcr.io/cloudposse/testing.cloudposse.co:${{TESTING_CLOUDPOSSE_CO_VERSION}}
+    working_directory: /
+    commands:
+    - cd /codefresh/volume/${{CF_REPO_NAME}}
+#    - make terraform/install
+#    - make terraform/get-plugins
+#    - make terraform/get-modules
+    - make terraform/lint
+    - make terraform/validate
+    - make terraform/validate
+    - make readme/lint
