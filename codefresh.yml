@@ -12,10 +12,7 @@ steps:
     image: r.cfcr.io/cloudposse/testing.cloudposse.co:${{TESTING_CLOUDPOSSE_CO_VERSION}}
     working_directory: /
     commands:
-    - cd /codefresh/volume/${{CF_REPO_NAME}}
-#    - make terraform/install
-#    - make terraform/get-plugins
-#    - make terraform/get-modules
+    - make init
     - make terraform/lint
     - make terraform/validate
     - make terraform/validate
