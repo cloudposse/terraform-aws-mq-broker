@@ -6,6 +6,9 @@ steps:
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     commands:
     - make init
+    - make terraform/install
+    - make terraform/get-plugins
+    - make terraform/get-modules
     - make terraform/lint
     - make terraform/validate
     - make readme/lint
