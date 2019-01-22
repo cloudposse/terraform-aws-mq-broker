@@ -11,7 +11,6 @@
 | chamber_service | SSM parameter service name for use with chamber. This is used in chamber_format where /$chamber_service/$parameter would be the default. | string | `` | no |
 | delimiter | Delimiter to be used between `name`, `namespace`, `stage` and `attributes` | string | `-` | no |
 | deployment_mode | The deployment mode of the broker. Supported: SINGLE_INSTANCE and ACTIVE_STANDBY_MULTI_AZ | string | `ACTIVE_STANDBY_MULTI_AZ` | no |
-| enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
 | engine_type | The type of broker engine. Currently, Amazon MQ supports only ActiveMQ | string | `ActiveMQ` | no |
 | engine_version | The version of the broker engine. Currently, Amazon MQ supports only 5.15.0 or 5.15.6. | string | `5.15.0` | no |
 | general_log | Enables general logging via CloudWatch | string | `true` | no |
