@@ -4,12 +4,6 @@ variable "apply_immediately" {
   description = "Specifies whether any cluster modifications are applied immediately, or during the next maintenance window"
 }
 
-variable "enabled" {
-  type        = "string"
-  default     = "true"
-  description = "Set to false to prevent the module from creating any resources"
-}
-
 variable "auto_minor_version_upgrade" {
   type        = "string"
   default     = "false"
