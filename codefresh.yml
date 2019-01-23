@@ -2,7 +2,7 @@ version: '1.0'
 
 steps:
   test:
-    title: Terraform module test
+    title: Terraform Module Integration Tests
     image: cloudposse/build-harness:${{BUILD_HARNESS_VERSION}}
     commands:
     - make init

@@ -3,7 +3,7 @@
 
 [![Cloud Posse][logo]](https://cpco.io/homepage)
 
-# terraform-aws-mq-broker [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-mq-broker.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-mq-broker) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-mq-broker.svg)](https://github.com/cloudposse/terraform-aws-mq-broker/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
+# terraform-aws-mq-broker [![Codefresh Build Status](https://g.codefresh.io/api/badges/pipeline/cloudposse/cloudposse%2Fterraform-aws-mq-broker%2Fterraform-aws-mq-broker?type=cf-1)](https://g.codefresh.io/public/accounts/cloudposse/pipelines/cloudposse/terraform-aws-mq-broker/terraform-aws-mq-broker) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-mq-broker.svg)](https://github.com/cloudposse/terraform-aws-mq-broker/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 
 
 Terraform module to provision AmazonMQ resources on AWS
