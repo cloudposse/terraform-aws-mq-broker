@@ -20,12 +20,12 @@ locals {
 }
 
 data "aws_kms_key" "chamber_kms_key" {
-  count = var.add_to_ssm && length(var.kms_key_id) > 0 ? 1 : 0
+  count  = var.add_to_ssm && length(var.kms_key_id) > 0 ? 1 : 0
   key_id = local.kms_key_id
 }
 
 module "kms_key" {
-  count = local.create_key ? 1 : 0
+  count                   = local.create_key ? 1 : 0
   source                  = "git::https://github.com/cloudposse/terraform-aws-kms-key.git?ref=0.6.1"
   namespace               = var.namespace
   stage                   = var.stage
@@ -37,33 +37,33 @@ module "kms_key" {
 }
 
 resource "random_string" "mq_admin_user" {
-  count = length(var.mq_admin_user) > 0 ? 0 : 1
+  count   = length(var.mq_admin_user) > 0 ? 0 : 1
   length  = 8
   special = false
   number  = false
 }
 
 resource "random_string" "mq_admin_password" {
-  count = length(var.mq_admin_password) > 0 ? 0 : 1
+  count   = length(var.mq_admin_password) > 0 ? 0 : 1
   length  = 16
   special = false
 }
 
 resource "random_string" "mq_application_user" {
-  count = length(var.mq_application_user) > 0 ? 0 : 1
+  count   = length(var.mq_application_user) > 0 ? 0 : 1
   length  = 8
   special = false
   number  = false
 }
 
 resource "random_string" "mq_application_password" {
-  count = length(var.mq_application_password) > 0 ? 0 : 1
+  count   = length(var.mq_application_password) > 0 ? 0 : 1
   length  = 16
   special = false
 }
 
 resource "aws_ssm_parameter" "mq_master_username" {
-  count = var.add_to_ssm ? 1 : 0
+  count       = var.add_to_ssm ? 1 : 0
   name        = format(var.chamber_parameter_name, local.chamber_service, "mq_admin_username")
   value       = local.mq_admin_user
   description = "MQ Username for the master user"
@@ -72,7 +72,7 @@ resource "aws_ssm_parameter" "mq_master_username" {
 }
 
 resource "aws_ssm_parameter" "mq_master_password" {
-  count = var.add_to_ssm ? 1 : 0
+  count       = var.add_to_ssm ? 1 : 0
   name        = format(var.chamber_parameter_name, local.chamber_service, "mq_admin_password")
   value       = local.mq_admin_password
   description = "MQ Password for the master user"
@@ -82,7 +82,7 @@ resource "aws_ssm_parameter" "mq_master_password" {
 }
 
 resource "aws_ssm_parameter" "mq_application_username" {
-  count = var.add_to_ssm ? 1 : 0
+  count       = var.add_to_ssm ? 1 : 0
   name        = format(var.chamber_parameter_name, local.chamber_service, "mq_application_username")
   value       = local.mq_application_user
   description = "AMQ username for the application user"
@@ -91,7 +91,7 @@ resource "aws_ssm_parameter" "mq_application_username" {
 }
 
 resource "aws_ssm_parameter" "mq_application_password" {
-  count = var.add_to_ssm ? 1 : 0
+  count       = var.add_to_ssm ? 1 : 0
   name        = format(var.chamber_parameter_name, local.chamber_service, "mq_application_password")
   value       = local.mq_application_password
   description = "AMQ password for the application user"
@@ -137,7 +137,7 @@ resource "aws_mq_broker" "default" {
 }
 
 resource "aws_security_group" "default" {
-  count = var.use_existing_security_groups == false ? 1 : 0
+  count  = var.use_existing_security_groups == false ? 1 : 0
   vpc_id = var.vpc_id
   name   = module.label.id
   tags   = module.label.tags

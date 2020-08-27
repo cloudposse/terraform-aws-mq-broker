@@ -7,6 +7,16 @@
 # Name of this project
 name: terraform-aws-mq-broker
 
+tags:
+  - aws
+  - terraform
+  - terraform-modules
+  - mq
+  - message-queue
+  - amq
+
+categories:
+  - terraform-modules/platform
 # Logo for this project
 #logo: docs/logo.png
 
@@ -49,7 +59,6 @@ usage: |-
   ```terraform
   module "amq" {
     source                     = "git::https://github.com/cloudposse/terraform-aws-mq-broker.git?ref=master"
-    enabled                    = "${var.mq_enabled}"
     namespace                  = "${var.namespace}"
     stage                      = "${var.stage}"
     name                       = "${var.name}"
@@ -58,7 +67,6 @@ usage: |-
     deployment_mode            = "${var.mq_deployment_mode}"
     engine_type                = "${var.mq_engine_type}"
     engine_version             = "${var.mq_engine_version}"
-    configuration_name         = "${var.mq_configuration_name}"
     host_instance_type         = "${var.mq_host_instance_type}"
     publicly_accessible        = "${var.mq_publicly_accessible}"
     general_log                = "${var.mq_general_log}"
@@ -66,7 +74,6 @@ usage: |-
     maintenance_day_of_week    = "${var.mq_maintenance_day_of_week}"
     maintenance_time_of_day    = "${var.mq_maintenance_time_of_day}"
     maintenance_time_zone      = "${var.mq_maintenance_time_zone}"
-    config_template_path       = "${var.mq_config_template_path}"
     vpc_id                     = "${var.vpc_id}"
     subnet_ids                 = ["${var.mq_subnet_ids}"]
     security_groups            = ["${var.node_security_groups}"]
@@ -81,3 +88,5 @@ include:
 contributors:
   - name: "Josh Myers"
     github: "joshmyers"
+  - name: "Connor Bell"
+    github: "makeshift"

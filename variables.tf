@@ -5,20 +5,20 @@ variable "apply_immediately" {
 }
 
 variable "add_to_ssm" {
-  type = bool
-  default = true
+  type        = bool
+  default     = true
   description = "Adds the admin and application user credentials to SSM."
 }
 
 variable "use_existing_security_groups" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "Flag to enable/disable creation of Security Group in the module. Set to `true` to disable Security Group creation and provide a list of existing security Group IDs in `existing_security_groups` to place the cluster into"
 }
 
 variable "existing_security_groups" {
-  type = list(string)
-  default = []
+  type        = list(string)
+  default     = []
   description = "List of existing Security Group IDs to place the cluster into. Set `use_existing_security_groups` to true to enable using `existing_security_groups` as Security Groups for the cluster"
 }
 
