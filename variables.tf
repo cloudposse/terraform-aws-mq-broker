@@ -160,7 +160,7 @@ variable "encryption_enabled" {
 
 variable "kms_mq_key_arn" {
   type        = string
-  default     = "alias/aws/mq"
+  default     = null
   description = "AWS KMS key used for Amazon MQ encryption"
 }
 

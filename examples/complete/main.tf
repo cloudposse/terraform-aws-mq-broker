@@ -42,7 +42,9 @@ module "mq_broker" {
   general_log_enabled          = var.general_log_enabled
   audit_log_enabled            = var.audit_log_enabled
   use_existing_security_groups = var.use_existing_security_groups
+  kms_ssm_key_arn              = var.kms_ssm_key_arn
   encryption_enabled           = var.encryption_enabled
+  kms_mq_key_arn               = var.kms_mq_key_arn
   use_aws_owned_key            = var.use_aws_owned_key
 
   context = module.this.context
