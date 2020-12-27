@@ -1,89 +1,94 @@
+output "public_subnet_cidrs" {
+  value       = module.subnets.public_subnet_cidrs
+  description = "Public subnet CIDR blocks"
+}
+
+output "private_subnet_cidrs" {
+  value       = module.subnets.private_subnet_cidrs
+  description = "Private subnet CIDR blocks"
+}
+
+output "vpc_cidr" {
+  value       = module.vpc.vpc_cidr_block
+  description = "VPC CIDR"
+}
+
 output "broker_id" {
-  value       = join("", aws_mq_broker.default.*.id)
+  value       = module.mq_broker.broker_id
   description = "AmazonMQ broker ID"
 }
 
 output "broker_arn" {
-  value       = join("", aws_mq_broker.default.*.arn)
+  value       = module.mq_broker.broker_arn
   description = "AmazonMQ broker ARN"
 }
 
 output "primary_console_url" {
-  value       = aws_mq_broker.default.instances[0].console_url
+  value       = module.mq_broker.primary_console_url
   description = "AmazonMQ active web console URL"
 }
 
 output "primary_ssl_endpoint" {
-  value       = aws_mq_broker.default.instances[0].endpoints[0]
+  value       = module.mq_broker.primary_ssl_endpoint
   description = "AmazonMQ primary SSL endpoint"
 }
 
 output "primary_amqp_ssl_endpoint" {
-  value       = aws_mq_broker.default.instances[0].endpoints[1]
+  value       = module.mq_broker.primary_amqp_ssl_endpoint
   description = "AmazonMQ primary AMQP+SSL endpoint"
 }
 
 output "primary_stomp_ssl_endpoint" {
-  value       = aws_mq_broker.default.instances[0].endpoints[2]
+  value       = module.mq_broker.primary_stomp_ssl_endpoint
   description = "AmazonMQ primary STOMP+SSL endpoint"
 }
 
 output "primary_mqtt_ssl_endpoint" {
-  value       = aws_mq_broker.default.instances[0].endpoints[3]
+  value       = module.mq_broker.primary_mqtt_ssl_endpoint
   description = "AmazonMQ primary MQTT+SSL endpoint"
 }
 
 output "primary_wss_endpoint" {
-  value       = aws_mq_broker.default.instances[0].endpoints[4]
+  value       = module.mq_broker.primary_wss_endpoint
   description = "AmazonMQ primary WSS endpoint"
 }
 
 output "primary_ip_address" {
-  value       = aws_mq_broker.default.instances[0].ip_address
+  value       = module.mq_broker.primary_ip_address
   description = "AmazonMQ primary IP address"
 }
 
 output "secondary_console_url" {
-  value       = try(aws_mq_broker.default.instances[1].console_url, "")
+  value       = module.mq_broker.secondary_console_url
   description = "AmazonMQ secondary web console URL"
 }
 
 output "secondary_ssl_endpoint" {
-  value       = try(aws_mq_broker.default.instances[1].endpoints[0], "")
+  value       = module.mq_broker.secondary_ssl_endpoint
   description = "AmazonMQ secondary SSL endpoint"
 }
 
 output "secondary_amqp_ssl_endpoint" {
-  value       = try(aws_mq_broker.default.instances[1].endpoints[1], "")
+  value       = module.mq_broker.secondary_amqp_ssl_endpoint
   description = "AmazonMQ secondary AMQP+SSL endpoint"
 }
 
 output "secondary_stomp_ssl_endpoint" {
-  value       = try(aws_mq_broker.default.instances[1].endpoints[2], "")
+  value       = module.mq_broker.secondary_stomp_ssl_endpoint
   description = "AmazonMQ secondary STOMP+SSL endpoint"
 }
 
 output "secondary_mqtt_ssl_endpoint" {
-  value       = try(aws_mq_broker.default.instances[1].endpoints[3], "")
+  value       = module.mq_broker.secondary_mqtt_ssl_endpoint
   description = "AmazonMQ secondary MQTT+SSL endpoint"
 }
 
 output "secondary_wss_endpoint" {
-  value       = try(aws_mq_broker.default.instances[1].endpoints[4], "")
+  value       = module.mq_broker.secondary_wss_endpoint
   description = "AmazonMQ secondary WSS endpoint"
 }
 
 output "secondary_ip_address" {
-  value       = try(aws_mq_broker.default.instances[1].ip_address, "")
+  value       = module.mq_broker.secondary_ip_address
   description = "AmazonMQ secondary IP address"
-}
-
-output "admin_username" {
-  value       = local.mq_admin_user
-  description = "AmazonMQ admin username"
-}
-
-output "application_username" {
-  value       = local.mq_application_user
-  description = "AmazonMQ application username"
 }

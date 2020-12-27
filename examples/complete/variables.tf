@@ -1,3 +1,13 @@
+variable "region" {
+  type        = string
+  description = "AWS region"
+}
+
+variable "availability_zones" {
+  type        = list(string)
+  description = "List of Availability Zones"
+}
+
 variable "apply_immediately" {
   type        = bool
   default     = false
@@ -104,16 +114,6 @@ variable "allowed_cidr_blocks" {
   type        = list(string)
   default     = []
   description = "List of CIDR blocks that are allowed ingress to the broker's Security Group created in the module"
-}
-
-variable "vpc_id" {
-  type        = string
-  description = "VPC ID to create the broker in"
-}
-
-variable "subnet_ids" {
-  type        = list(string)
-  description = "List of VPC subnet IDs"
 }
 
 variable "overwrite_ssm_parameter" {
