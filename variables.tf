@@ -146,21 +146,21 @@ variable "ssm_path" {
   description = "SSM path"
 }
 
-variable "encryption_enabled" {
-  type        = bool
-  default     = true
-  description = "Flag to enable/disable Amazon MQ encryption at rest"
-}
-
 variable "kms_ssm_key_arn" {
   type        = string
   default     = "alias/aws/ssm"
   description = "AWS KMS key used for SSM encryption"
 }
 
+variable "encryption_enabled" {
+  type        = bool
+  default     = true
+  description = "Flag to enable/disable Amazon MQ encryption at rest"
+}
+
 variable "kms_mq_key_arn" {
   type        = string
-  default     = "aws/mq"
+  default     = "alias/aws/mq"
   description = "AWS KMS key used for Amazon MQ encryption"
 }
 
