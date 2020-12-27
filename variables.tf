@@ -161,5 +161,5 @@ variable "kms_mq_key_arn" {
 variable "use_aws_owned_key" {
   type        = bool
   default     = true
-  description = "Boolean to enable an AWS owned Key Management Service (KMS) Customer Master Key (CMK) that is not in your account"
+  description = "Boolean to enable an AWS owned Key Management Service (KMS) Customer Master Key (CMK) for Amazon MQ encryption that is not in your account"
 }

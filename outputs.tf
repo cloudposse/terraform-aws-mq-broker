@@ -54,7 +54,7 @@ output "secondary_ssl_endpoint" {
 }
 
 output "secondary_amqp_ssl_endpoint" {
-  value       = "${aws_mq_broker.default.instances.1.endpoints.1}"
+  value       = aws_mq_broker.default.instances[1].endpoints[1]
   description = "AmazonMQ secondary AMQP+SSL endpoint"
 }
 

@@ -185,7 +185,7 @@ Available targets:
 | stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | subnet\_ids | List of VPC subnet IDs | `list(string)` | n/a | yes |
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
-| use\_aws\_owned\_key | Boolean to enable an AWS owned Key Management Service (KMS) Customer Master Key (CMK) that is not in your account | `bool` | `true` | no |
+| use\_aws\_owned\_key | Boolean to enable an AWS owned Key Management Service (KMS) Customer Master Key (CMK) for Amazon MQ encryption that is not in your account | `bool` | `true` | no |
 | use\_existing\_security\_groups | Flag to enable/disable creation of Security Group in the module. Set to `true` to disable Security Group creation and provide a list of existing security Group IDs in `existing_security_groups` to place the broker into | `bool` | `false` | no |
 | vpc\_id | VPC ID to create the broker in | `string` | n/a | yes |
 
