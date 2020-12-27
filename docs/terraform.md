@@ -27,8 +27,6 @@
 | attributes | Additional attributes (e.g. `1`) | `list(string)` | `[]` | no |
 | audit\_log\_enabled | Enables audit logging. User management action made using JMX or the ActiveMQ Web Console is logged | `bool` | `true` | no |
 | auto\_minor\_version\_upgrade | Enables automatic upgrades to new minor versions for brokers, as Apache releases the versions | `bool` | `false` | no |
-| chamber\_parameter\_name | Format to store parameters in SSM | `string` | `"/%s/%s"` | no |
-| chamber\_service | SSM parameter service name | `string` | `""` | no |
 | context | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | <pre>object({<br>    enabled             = bool<br>    namespace           = string<br>    environment         = string<br>    stage               = string<br>    name                = string<br>    delimiter           = string<br>    attributes          = list(string)<br>    tags                = map(string)<br>    additional_tag_map  = map(string)<br>    regex_replace_chars = string<br>    label_order         = list(string)<br>    id_length_limit     = number<br>  })</pre> | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_order": [],<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {}<br>}</pre> | no |
 | delimiter | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
 | deployment\_mode | The deployment mode of the broker. Supported: SINGLE\_INSTANCE and ACTIVE\_STANDBY\_MULTI\_AZ | `string` | `"ACTIVE_STANDBY_MULTI_AZ"` | no |
@@ -40,7 +38,8 @@
 | general\_log\_enabled | Enables general logging via CloudWatch | `bool` | `true` | no |
 | host\_instance\_type | The broker's instance type. e.g. mq.t2.micro or mq.m4.large | `string` | `"mq.t2.micro"` | no |
 | id\_length\_limit | Limit `id` to this many characters.<br>Set to `0` for unlimited length.<br>Set to `null` for default, which is `0`.<br>Does not affect `id_full`. | `number` | `null` | no |
-| kms\_key\_id | KMS key ID used to encrypt SSM parameters and for Amazon MQ encryption at rest | `string` | `null` | no |
+| kms\_mq\_key\_arn | AWS KMS key used for Amazon MQ encryption | `string` | `"aws/mq"` | no |
+| kms\_ssm\_key\_arn | AWS KMS key used for SSM encryption | `string` | `"alias/aws/ssm"` | no |
 | label\_order | The naming order of the id output and Name tag.<br>Defaults to ["namespace", "environment", "stage", "name", "attributes"].<br>You can omit any of the 5 elements, but at least one must be present. | `list(string)` | `null` | no |
 | maintenance\_day\_of\_week | The maintenance day of the week. e.g. MONDAY, TUESDAY, or WEDNESDAY | `string` | `"SUNDAY"` | no |
 | maintenance\_time\_of\_day | The maintenance time, in 24-hour format. e.g. 02:00 | `string` | `"03:00"` | no |
@@ -54,6 +53,8 @@
 | overwrite\_ssm\_parameter | Whether to overwrite an existing SSM parameter | `bool` | `true` | no |
 | publicly\_accessible | Whether to enable connections from applications outside of the VPC that hosts the broker's subnets | `bool` | `false` | no |
 | regex\_replace\_chars | Regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`.<br>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | `null` | no |
+| ssm\_parameter\_name\_format | SSM parameter name format | `string` | `"/%s/%s"` | no |
+| ssm\_path | SSM path | `string` | `"mq"` | no |
 | stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | subnet\_ids | List of VPC subnet IDs | `list(string)` | n/a | yes |
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |

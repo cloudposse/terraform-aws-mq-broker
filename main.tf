@@ -1,58 +1,55 @@
 locals {
-  kms_key_id              = length(var.kms_key_id) > 0 ? var.kms_key_id : format("alias/%s-%s-chamber", var.namespace, var.stage)
-  key_id                  = join("", data.aws_kms_key.chamber_kms_key.*.id)
-  chamber_service         = var.chamber_service == "" ? basename(pathexpand(path.module)) : var.chamber_service
-  mq_admin_user           = length(var.mq_admin_user) > 0 ? var.mq_admin_user : random_string.mq_admin_user.result
-  mq_admin_password       = length(var.mq_admin_password) > 0 ? var.mq_admin_password : random_password.mq_admin_password.result
-  mq_application_user     = length(var.mq_application_user) > 0 ? var.mq_application_user : random_string.mq_application_user.result
-  mq_application_password = length(var.mq_application_password) > 0 ? var.mq_application_password : random_password.mq_application_password.result
-}
-
-data "aws_kms_key" "chamber_kms_key" {
-  key_id = local.kms_key_id
+  mq_admin_user           = var.mq_admin_user != null && var.mq_admin_user != "" ? var.mq_admin_user : join("", random_string.mq_admin_user.*.result)
+  mq_admin_password       = var.mq_admin_password != null && var.mq_admin_password != "" ? var.mq_admin_password : join("", random_password.mq_admin_password.*.result)
+  mq_application_user     = var.mq_application_user != null && var.mq_application_user != "" ? var.mq_application_user : join("", random_string.mq_application_user.*.result)
+  mq_application_password = var.mq_application_password != null && var.mq_application_password != "" ? var.mq_application_password : join("", random_password.mq_application_password.*.result)
 }
 
 resource "random_string" "mq_admin_user" {
+  count   = var.mq_admin_user == null || var.mq_admin_user == "" ? 1 : 0
   length  = 8
   special = false
   number  = false
 }
 
 resource "random_password" "mq_admin_password" {
+  count   = var.mq_admin_password == null || var.mq_admin_password == "" ? 1 : 0
   length  = 16
   special = false
 }
 
 resource "random_string" "mq_application_user" {
+  count   = var.mq_application_user == null || var.mq_application_user == "" ? 1 : 0
   length  = 8
   special = false
   number  = false
 }
 
 resource "random_password" "mq_application_password" {
+  count   = var.mq_application_password == null || var.mq_application_password == "" ? 1 : 0
   length  = 16
   special = false
 }
 
 resource "aws_ssm_parameter" "mq_master_username" {
-  name        = format(var.chamber_parameter_name, local.chamber_service, "mq_admin_username")
+  name        = format(var.ssm_parameter_name_format, var.ssm_path, "mq_admin_username")
   value       = local.mq_admin_user
-  description = "MQ Username for the master user"
+  description = "MQ Username for the admin user"
   type        = "String"
   overwrite   = var.overwrite_ssm_parameter
 }
 
 resource "aws_ssm_parameter" "mq_master_password" {
-  name        = format(var.chamber_parameter_name, local.chamber_service, "mq_admin_password")
+  name        = format(var.ssm_parameter_name_format, var.ssm_path, "mq_admin_password")
   value       = local.mq_admin_password
-  description = "MQ Password for the master user"
+  description = "MQ Password for the admin user"
   type        = "SecureString"
-  key_id      = local.key_id
+  key_id      = var.kms_ssm_key_arn
   overwrite   = var.overwrite_ssm_parameter
 }
 
 resource "aws_ssm_parameter" "mq_application_username" {
-  name        = format(var.chamber_parameter_name, local.chamber_service, "mq_application_username")
+  name        = format(var.ssm_parameter_name_format, var.ssm_path, "mq_application_username")
   value       = local.mq_application_user
   description = "AMQ username for the application user"
   type        = "String"
@@ -60,11 +57,11 @@ resource "aws_ssm_parameter" "mq_application_username" {
 }
 
 resource "aws_ssm_parameter" "mq_application_password" {
-  name        = format(var.chamber_parameter_name, local.chamber_service, "mq_application_password")
+  name        = format(var.ssm_parameter_name_format, var.ssm_path, "mq_application_password")
   value       = local.mq_application_password
   description = "AMQ password for the application user"
   type        = "SecureString"
-  key_id      = local.key_id
+  key_id      = var.kms_ssm_key_arn
   overwrite   = var.overwrite_ssm_parameter
 }
 
@@ -81,7 +78,7 @@ resource "aws_mq_broker" "default" {
   subnet_ids                 = var.subnet_ids
 
   encryption_options {
-    kms_key_id        = var.kms_key_id
+    kms_key_id        = var.kms_mq_key_arn
     use_aws_owned_key = var.use_aws_owned_key
   }
 
@@ -107,44 +104,4 @@ resource "aws_mq_broker" "default" {
     username = local.mq_application_user
     password = local.mq_application_password
   }
-}
-
-resource "aws_security_group" "default" {
-  count  = module.this.enabled && var.use_existing_security_groups == false ? 1 : 0
-  vpc_id = var.vpc_id
-  name   = module.this.id
-  tags   = module.this.tags
-}
-
-resource "aws_security_group_rule" "egress" {
-  count             = module.this.enabled && var.use_existing_security_groups == false ? 1 : 0
-  description       = "Allow outbound traffic"
-  from_port         = 0
-  to_port           = 0
-  protocol          = "-1"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = join("", aws_security_group.default.*.id)
-  type              = "egress"
-}
-
-resource "aws_security_group_rule" "ingress_security_groups" {
-  count                    = module.this.enabled && var.use_existing_security_groups == false ? length(var.allowed_security_groups) : 0
-  description              = "Allow inbound traffic from existing Security Groups"
-  from_port                = 0
-  to_port                  = 0
-  protocol                 = "tcp"
-  source_security_group_id = var.allowed_security_groups[count.index]
-  security_group_id        = join("", aws_security_group.default.*.id)
-  type                     = "ingress"
-}
-
-resource "aws_security_group_rule" "ingress_cidr_blocks" {
-  count             = module.this.enabled && var.use_existing_security_groups == false && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
-  description       = "Allow inbound traffic from CIDR blocks"
-  from_port         = "0"
-  to_port           = "0"
-  protocol          = "tcp"
-  cidr_blocks       = var.allowed_cidr_blocks
-  security_group_id = join("", aws_security_group.default.*.id)
-  type              = "ingress"
 }

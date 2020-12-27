@@ -116,34 +116,10 @@ variable "subnet_ids" {
   description = "List of VPC subnet IDs"
 }
 
-variable "chamber_parameter_name" {
-  type        = string
-  default     = "/%s/%s"
-  description = "Format to store parameters in SSM"
-}
-
-variable "chamber_service" {
-  type        = string
-  default     = ""
-  description = "SSM parameter service name"
-}
-
 variable "overwrite_ssm_parameter" {
   type        = bool
   default     = true
   description = "Whether to overwrite an existing SSM parameter"
-}
-
-variable "kms_key_id" {
-  type        = string
-  default     = null
-  description = "KMS key ID used to encrypt SSM parameters and for Amazon MQ encryption at rest"
-}
-
-variable "use_aws_owned_key" {
-  type        = bool
-  default     = true
-  description = "Boolean to enable an AWS owned Key Management Service (KMS) Customer Master Key (CMK) that is not in your account"
 }
 
 variable "use_existing_security_groups" {
@@ -156,4 +132,34 @@ variable "existing_security_groups" {
   type        = list(string)
   default     = []
   description = "List of existing Security Group IDs to place the broker into. Set `use_existing_security_groups` to `true` to enable using `existing_security_groups` as Security Groups for the broker"
+}
+
+variable "ssm_parameter_name_format" {
+  type        = string
+  default     = "/%s/%s"
+  description = "SSM parameter name format"
+}
+
+variable "ssm_path" {
+  type        = string
+  default     = "mq"
+  description = "SSM path"
+}
+
+variable "kms_ssm_key_arn" {
+  type        = string
+  default     = "alias/aws/ssm"
+  description = "AWS KMS key used for SSM encryption"
+}
+
+variable "kms_mq_key_arn" {
+  type        = string
+  default     = "aws/mq"
+  description = "AWS KMS key used for Amazon MQ encryption"
+}
+
+variable "use_aws_owned_key" {
+  type        = bool
+  default     = true
+  description = "Boolean to enable an AWS owned Key Management Service (KMS) Customer Master Key (CMK) that is not in your account"
 }
