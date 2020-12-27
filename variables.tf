@@ -24,8 +24,8 @@ variable "engine_type" {
 
 variable "engine_version" {
   type        = string
-  default     = "5.15.0"
-  description = "The version of the broker engine. Currently, Amazon MQ supports only 5.15.0 or 5.15.6."
+  default     = "5.15.14"
+  description = "The version of the broker engine. See https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/broker-engine.html for more details"
 }
 
 variable "host_instance_type" {
@@ -37,16 +37,16 @@ variable "host_instance_type" {
 variable "publicly_accessible" {
   type        = bool
   default     = false
-  description = "Whether to enable connections from applications outside of the VPC that hosts the broker's subnets."
+  description = "Whether to enable connections from applications outside of the VPC that hosts the broker's subnets"
 }
 
-variable "general_log" {
+variable "general_log_enabled" {
   type        = bool
   default     = true
   description = "Enables general logging via CloudWatch"
 }
 
-variable "audit_log" {
+variable "audit_log_enabled" {
   type        = bool
   default     = true
   description = "Enables audit logging. User management action made using JMX or the ActiveMQ Web Console is logged"
@@ -72,37 +72,43 @@ variable "maintenance_time_zone" {
 
 variable "mq_admin_user" {
   type        = string
-  default     = ""
+  default     = null
   description = "Admin username"
 }
 
 variable "mq_admin_password" {
   type        = string
-  default     = ""
+  default     = null
   description = "Admin password"
 }
 
 variable "mq_application_user" {
   type        = string
-  default     = ""
+  default     = null
   description = "Application username"
 }
 
 variable "mq_application_password" {
   type        = string
-  default     = ""
+  default     = null
   description = "Application password"
 }
 
-variable "security_groups" {
+variable "allowed_security_groups" {
   type        = list(string)
-  description = "List of security groups to be allowed to connect to the ActiveMQ instance"
+  description = "List of security groups to be allowed to connect to the broker instance"
   default     = []
+}
+
+variable "allowed_cidr_blocks" {
+  type        = list(string)
+  default     = []
+  description = "List of CIDR blocks that are allowed ingress to the broker's Security Group created in the module"
 }
 
 variable "vpc_id" {
   type        = string
-  description = "VPC ID to create the cluster in (e.g. `vpc-a22222ee`)"
+  description = "VPC ID to create the broker in"
 }
 
 variable "subnet_ids" {
@@ -113,13 +119,13 @@ variable "subnet_ids" {
 variable "chamber_parameter_name" {
   type        = string
   default     = "/%s/%s"
-  description = "Format to store parameters in SSM, for consumption with chamber"
+  description = "Format to store parameters in SSM"
 }
 
 variable "chamber_service" {
   type        = string
   default     = ""
-  description = "SSM parameter service name for use with chamber. This is used in chamber_format where /$chamber_service/$parameter would be the default."
+  description = "SSM parameter service name"
 }
 
 variable "overwrite_ssm_parameter" {
@@ -130,6 +136,24 @@ variable "overwrite_ssm_parameter" {
 
 variable "kms_key_id" {
   type        = string
-  default     = ""
-  description = "KMS key ID used to encrypt SSM parameters"
+  default     = null
+  description = "KMS key ID used to encrypt SSM parameters and for Amazon MQ encryption at rest"
+}
+
+variable "use_aws_owned_key" {
+  type        = bool
+  default     = true
+  description = "Boolean to enable an AWS owned Key Management Service (KMS) Customer Master Key (CMK) that is not in your account"
+}
+
+variable "use_existing_security_groups" {
+  type        = bool
+  description = "Flag to enable/disable creation of Security Group in the module. Set to `true` to disable Security Group creation and provide a list of existing security Group IDs in `existing_security_groups` to place the broker into"
+  default     = false
+}
+
+variable "existing_security_groups" {
+  type        = list(string)
+  default     = []
+  description = "List of existing Security Group IDs to place the broker into. Set `use_existing_security_groups` to `true` to enable using `existing_security_groups` as Security Groups for the broker"
 }
