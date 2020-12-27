@@ -54,5 +54,11 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	brokerId := terraform.Output(t, terraformOptions, "broker_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-mq-broker-"+randId, brokerId)
+	assert.NotEmpty(t, brokerId)
+
+	// Run `terraform output` to get the value of an output variable
+	brokerArn := terraform.Output(t, terraformOptions, "broker_arn")
+	// Verify we're getting back the outputs we expect
+	assert.Contains(t, brokerArn, "broker:eg-test-mq-broker-"+randId)
+	assert.Contains(t, brokerArn, brokerId)
 }

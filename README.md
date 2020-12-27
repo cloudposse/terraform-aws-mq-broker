@@ -173,8 +173,8 @@ Available targets:
 | general\_log\_enabled | Enables general logging via CloudWatch | `bool` | `true` | no |
 | host\_instance\_type | The broker's instance type. e.g. mq.t2.micro or mq.m4.large | `string` | `"mq.t3.micro"` | no |
 | id\_length\_limit | Limit `id` to this many characters.<br>Set to `0` for unlimited length.<br>Set to `null` for default, which is `0`.<br>Does not affect `id_full`. | `number` | `null` | no |
-| kms\_mq\_key\_arn | AWS KMS key used for Amazon MQ encryption | `string` | `null` | no |
-| kms\_ssm\_key\_arn | AWS KMS key used for SSM encryption | `string` | `"alias/aws/ssm"` | no |
+| kms\_mq\_key\_arn | ARN of the AWS KMS key used for Amazon MQ encryption | `string` | `null` | no |
+| kms\_ssm\_key\_arn | ARN of the AWS KMS key used for SSM encryption | `string` | `"alias/aws/ssm"` | no |
 | label\_order | The naming order of the id output and Name tag.<br>Defaults to ["namespace", "environment", "stage", "name", "attributes"].<br>You can omit any of the 5 elements, but at least one must be present. | `list(string)` | `null` | no |
 | maintenance\_day\_of\_week | The maintenance day of the week. e.g. MONDAY, TUESDAY, or WEDNESDAY | `string` | `"SUNDAY"` | no |
 | maintenance\_time\_of\_day | The maintenance time, in 24-hour format. e.g. 02:00 | `string` | `"03:00"` | no |

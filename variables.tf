@@ -149,7 +149,7 @@ variable "ssm_path" {
 variable "kms_ssm_key_arn" {
   type        = string
   default     = "alias/aws/ssm"
-  description = "AWS KMS key used for SSM encryption"
+  description = "ARN of the AWS KMS key used for SSM encryption"
 }
 
 variable "encryption_enabled" {
@@ -161,7 +161,7 @@ variable "encryption_enabled" {
 variable "kms_mq_key_arn" {
   type        = string
   default     = null
-  description = "AWS KMS key used for Amazon MQ encryption"
+  description = "ARN of the AWS KMS key used for Amazon MQ encryption"
 }
 
 variable "use_aws_owned_key" {
