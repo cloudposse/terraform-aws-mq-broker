@@ -82,29 +82,36 @@ the registry shows many of our inputs as required when in fact they are optional
 The table below correctly indicates which inputs are required.
 
 
+
+For a complete example, see [examples/complete](examples/complete).
+
+For automated tests of the complete example using [bats](https://github.com/bats-core/bats-core) and [Terratest](https://github.com/gruntwork-io/terratest)
+(which tests and deploys the example on AWS), see [test](test).
+
 ```hcl
-  module "amq" {
-    source                     = "git::https://github.com/cloudposse/terraform-aws-mq-broker.git?ref=master"
-    namespace                  = var.namespace
-    stage                      = var.stage
-    name                       = var.name
-    apply_immediately          = var.apply_immediately
-    auto_minor_version_upgrade = var.auto_minor_version_upgrade
-    deployment_mode            = var.deployment_mode
-    engine_type                = var.engine_type
-    engine_version             = var.engine_version
-    configuration_name         = var.configuration_name
-    host_instance_type         = var.host_instance_type
-    publicly_accessible        = var.publicly_accessible
-    general_log                = var.general_log
-    audit_log                  = var.audit_log
-    maintenance_day_of_week    = var.maintenance_day_of_week
-    maintenance_time_of_day    = var.maintenance_time_of_day
-    maintenance_time_zone      = var.maintenance_time_zone
-    config_template_path       = var.config_template_path
-    vpc_id                     = var.vpc_id
-    subnet_ids                 = var.subnet_ids
-    security_groups            = var.security_groups
+  module "mq_broker" {
+    source = "cloudposse/mq-broker/aws"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version     = "x.x.x"
+
+    namespace                    = "eg"
+    stage                        = "test"
+    name                         = "mq-broker"
+    apply_immediately            = true
+    auto_minor_version_upgrade   = true
+    deployment_mode              = "ACTIVE_STANDBY_MULTI_AZ"
+    engine_type                  = "ActiveMQ"
+    engine_version               = "5.15.14"
+    host_instance_type           = "mq.t3.micro"
+    publicly_accessible          = false
+    general_log_enabled          = true
+    audit_log_enabled            = true
+    use_existing_security_groups = false
+    encryption_enabled           = true
+    use_aws_owned_key            = true
+    vpc_id                       = var.vpc_id
+    subnet_ids                   = var.subnet_ids
+    allowed_security_groups      = var.allowed_security_groups
   }
 ```
 
@@ -158,12 +165,13 @@ Available targets:
 | delimiter | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
 | deployment\_mode | The deployment mode of the broker. Supported: SINGLE\_INSTANCE and ACTIVE\_STANDBY\_MULTI\_AZ | `string` | `"ACTIVE_STANDBY_MULTI_AZ"` | no |
 | enabled | Set to false to prevent the module from creating any resources | `bool` | `null` | no |
-| engine\_type | The type of broker engine. Currently, Amazon MQ supports only ActiveMQ | `string` | `"ActiveMQ"` | no |
+| encryption\_enabled | Flag to enable/disable Amazon MQ encryption at rest | `bool` | `true` | no |
+| engine\_type | Type of broker engine, `ActiveMQ` or `RabbitMQ` | `string` | `"ActiveMQ"` | no |
 | engine\_version | The version of the broker engine. See https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/broker-engine.html for more details | `string` | `"5.15.14"` | no |
 | environment | Environment, e.g. 'uw2', 'us-west-2', OR 'prod', 'staging', 'dev', 'UAT' | `string` | `null` | no |
 | existing\_security\_groups | List of existing Security Group IDs to place the broker into. Set `use_existing_security_groups` to `true` to enable using `existing_security_groups` as Security Groups for the broker | `list(string)` | `[]` | no |
 | general\_log\_enabled | Enables general logging via CloudWatch | `bool` | `true` | no |
-| host\_instance\_type | The broker's instance type. e.g. mq.t2.micro or mq.m4.large | `string` | `"mq.t2.micro"` | no |
+| host\_instance\_type | The broker's instance type. e.g. mq.t2.micro or mq.m4.large | `string` | `"mq.t3.micro"` | no |
 | id\_length\_limit | Limit `id` to this many characters.<br>Set to `0` for unlimited length.<br>Set to `null` for default, which is `0`.<br>Does not affect `id_full`. | `number` | `null` | no |
 | kms\_mq\_key\_arn | AWS KMS key used for Amazon MQ encryption | `string` | `"aws/mq"` | no |
 | kms\_ssm\_key\_arn | AWS KMS key used for SSM encryption | `string` | `"alias/aws/ssm"` | no |

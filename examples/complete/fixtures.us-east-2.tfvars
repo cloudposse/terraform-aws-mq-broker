@@ -8,34 +8,28 @@ stage = "test"
 
 name = "mq-broker"
 
-deletion_protection = false
+apply_immediately = true
 
-database_name = "test_db"
+auto_minor_version_upgrade = true
 
-database_user = "admin"
+deployment_mode = "ACTIVE_STANDBY_MULTI_AZ"
 
-database_password = "admin_password"
+engine_type = "ActiveMQ"
 
-database_port = 3306
+engine_version = "5.15.14"
 
-multi_az = false
+# https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/broker-instance-types.html
 
-storage_type = "standard"
-
-storage_encrypted = false
-
-allocated_storage = 5
-
-engine = "mysql"
-
-engine_version = "5.7.17"
-
-major_engine_version = "5.7"
-
-instance_class = "db.t2.small"
-
-db_parameter_group = "mysql5.7"
+host_instance_type = "mq.t3.micro"
 
 publicly_accessible = false
 
-apply_immediately = true
+general_log_enabled = true
+
+audit_log_enabled = true
+
+use_existing_security_groups = false
+
+encryption_enabled = true
+
+use_aws_owned_key = true

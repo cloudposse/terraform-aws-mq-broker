@@ -77,9 +77,12 @@ resource "aws_mq_broker" "default" {
   security_groups            = var.use_existing_security_groups ? var.existing_security_groups : [join("", aws_security_group.default.*.id)]
   subnet_ids                 = var.subnet_ids
 
-  encryption_options {
-    kms_key_id        = var.kms_mq_key_arn
-    use_aws_owned_key = var.use_aws_owned_key
+  dynamic "encryption_options" {
+    for_each = var.encryption_enabled ? ["true"] : []
+    content {
+      kms_key_id        = var.kms_mq_key_arn
+      use_aws_owned_key = var.use_aws_owned_key
+    }
   }
 
   logs {

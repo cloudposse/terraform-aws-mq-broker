@@ -59,29 +59,36 @@ introduction: |-
 
 # How to use this project
 usage: |-
+
+  For a complete example, see [examples/complete](examples/complete).
+
+  For automated tests of the complete example using [bats](https://github.com/bats-core/bats-core) and [Terratest](https://github.com/gruntwork-io/terratest)
+  (which tests and deploys the example on AWS), see [test](test).
+
   ```hcl
-    module "amq" {
-      source                     = "git::https://github.com/cloudposse/terraform-aws-mq-broker.git?ref=master"
-      namespace                  = var.namespace
-      stage                      = var.stage
-      name                       = var.name
-      apply_immediately          = var.apply_immediately
-      auto_minor_version_upgrade = var.auto_minor_version_upgrade
-      deployment_mode            = var.deployment_mode
-      engine_type                = var.engine_type
-      engine_version             = var.engine_version
-      configuration_name         = var.configuration_name
-      host_instance_type         = var.host_instance_type
-      publicly_accessible        = var.publicly_accessible
-      general_log                = var.general_log
-      audit_log                  = var.audit_log
-      maintenance_day_of_week    = var.maintenance_day_of_week
-      maintenance_time_of_day    = var.maintenance_time_of_day
-      maintenance_time_zone      = var.maintenance_time_zone
-      config_template_path       = var.config_template_path
-      vpc_id                     = var.vpc_id
-      subnet_ids                 = var.subnet_ids
-      security_groups            = var.security_groups
+    module "mq_broker" {
+      source = "cloudposse/mq-broker/aws"
+      # Cloud Posse recommends pinning every module to a specific version
+      # version     = "x.x.x"
+
+      namespace                    = "eg"
+      stage                        = "test"
+      name                         = "mq-broker"
+      apply_immediately            = true
+      auto_minor_version_upgrade   = true
+      deployment_mode              = "ACTIVE_STANDBY_MULTI_AZ"
+      engine_type                  = "ActiveMQ"
+      engine_version               = "5.15.14"
+      host_instance_type           = "mq.t3.micro"
+      publicly_accessible          = false
+      general_log_enabled          = true
+      audit_log_enabled            = true
+      use_existing_security_groups = false
+      encryption_enabled           = true
+      use_aws_owned_key            = true
+      vpc_id                       = var.vpc_id
+      subnet_ids                   = var.subnet_ids
+      allowed_security_groups      = var.allowed_security_groups
     }
   ```
 

@@ -19,7 +19,7 @@ variable "deployment_mode" {
 variable "engine_type" {
   type        = string
   default     = "ActiveMQ"
-  description = "The type of broker engine. Currently, Amazon MQ supports only ActiveMQ"
+  description = "Type of broker engine, `ActiveMQ` or `RabbitMQ`"
 }
 
 variable "engine_version" {
@@ -30,7 +30,7 @@ variable "engine_version" {
 
 variable "host_instance_type" {
   type        = string
-  default     = "mq.t2.micro"
+  default     = "mq.t3.micro"
   description = "The broker's instance type. e.g. mq.t2.micro or mq.m4.large"
 }
 
@@ -96,8 +96,8 @@ variable "mq_application_password" {
 
 variable "allowed_security_groups" {
   type        = list(string)
-  description = "List of security groups to be allowed to connect to the broker instance"
   default     = []
+  description = "List of security groups to be allowed to connect to the broker instance"
 }
 
 variable "allowed_cidr_blocks" {
@@ -124,8 +124,8 @@ variable "overwrite_ssm_parameter" {
 
 variable "use_existing_security_groups" {
   type        = bool
-  description = "Flag to enable/disable creation of Security Group in the module. Set to `true` to disable Security Group creation and provide a list of existing security Group IDs in `existing_security_groups` to place the broker into"
   default     = false
+  description = "Flag to enable/disable creation of Security Group in the module. Set to `true` to disable Security Group creation and provide a list of existing security Group IDs in `existing_security_groups` to place the broker into"
 }
 
 variable "existing_security_groups" {
@@ -144,6 +144,12 @@ variable "ssm_path" {
   type        = string
   default     = "mq"
   description = "SSM path"
+}
+
+variable "encryption_enabled" {
+  type        = bool
+  default     = true
+  description = "Flag to enable/disable Amazon MQ encryption at rest"
 }
 
 variable "kms_ssm_key_arn" {

@@ -31,12 +31,13 @@
 | delimiter | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
 | deployment\_mode | The deployment mode of the broker. Supported: SINGLE\_INSTANCE and ACTIVE\_STANDBY\_MULTI\_AZ | `string` | `"ACTIVE_STANDBY_MULTI_AZ"` | no |
 | enabled | Set to false to prevent the module from creating any resources | `bool` | `null` | no |
-| engine\_type | The type of broker engine. Currently, Amazon MQ supports only ActiveMQ | `string` | `"ActiveMQ"` | no |
+| encryption\_enabled | Flag to enable/disable Amazon MQ encryption at rest | `bool` | `true` | no |
+| engine\_type | Type of broker engine, `ActiveMQ` or `RabbitMQ` | `string` | `"ActiveMQ"` | no |
 | engine\_version | The version of the broker engine. See https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/broker-engine.html for more details | `string` | `"5.15.14"` | no |
 | environment | Environment, e.g. 'uw2', 'us-west-2', OR 'prod', 'staging', 'dev', 'UAT' | `string` | `null` | no |
 | existing\_security\_groups | List of existing Security Group IDs to place the broker into. Set `use_existing_security_groups` to `true` to enable using `existing_security_groups` as Security Groups for the broker | `list(string)` | `[]` | no |
 | general\_log\_enabled | Enables general logging via CloudWatch | `bool` | `true` | no |
-| host\_instance\_type | The broker's instance type. e.g. mq.t2.micro or mq.m4.large | `string` | `"mq.t2.micro"` | no |
+| host\_instance\_type | The broker's instance type. e.g. mq.t2.micro or mq.m4.large | `string` | `"mq.t3.micro"` | no |
 | id\_length\_limit | Limit `id` to this many characters.<br>Set to `0` for unlimited length.<br>Set to `null` for default, which is `0`.<br>Does not affect `id_full`. | `number` | `null` | no |
 | kms\_mq\_key\_arn | AWS KMS key used for Amazon MQ encryption | `string` | `"aws/mq"` | no |
 | kms\_ssm\_key\_arn | AWS KMS key used for SSM encryption | `string` | `"alias/aws/ssm"` | no |
