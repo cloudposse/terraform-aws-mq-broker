@@ -1,4 +1,5 @@
 locals {
+  enabled                 = module.this.enabled
   mq_admin_user           = var.mq_admin_user != null && var.mq_admin_user != "" ? var.mq_admin_user : join("", random_string.mq_admin_user.*.result)
   mq_admin_password       = var.mq_admin_password != null && var.mq_admin_password != "" ? var.mq_admin_password : join("", random_password.mq_admin_password.*.result)
   mq_application_user     = var.mq_application_user != null && var.mq_application_user != "" ? var.mq_application_user : join("", random_string.mq_application_user.*.result)
@@ -6,32 +7,33 @@ locals {
 }
 
 resource "random_string" "mq_admin_user" {
-  count   = var.mq_admin_user == null || var.mq_admin_user == "" ? 1 : 0
+  count   = local.enabled && (var.mq_admin_user == null || var.mq_admin_user == "") ? 1 : 0
   length  = 8
   special = false
   number  = false
 }
 
 resource "random_password" "mq_admin_password" {
-  count   = var.mq_admin_password == null || var.mq_admin_password == "" ? 1 : 0
+  count   = local.enabled && (var.mq_admin_password == null || var.mq_admin_password == "") ? 1 : 0
   length  = 16
   special = false
 }
 
 resource "random_string" "mq_application_user" {
-  count   = var.mq_application_user == null || var.mq_application_user == "" ? 1 : 0
+  count   = local.enabled && (var.mq_application_user == null || var.mq_application_user == "") ? 1 : 0
   length  = 8
   special = false
   number  = false
 }
 
 resource "random_password" "mq_application_password" {
-  count   = var.mq_application_password == null || var.mq_application_password == "" ? 1 : 0
+  count   = local.enabled && (var.mq_application_password == null || var.mq_application_password == "") ? 1 : 0
   length  = 16
   special = false
 }
 
 resource "aws_ssm_parameter" "mq_master_username" {
+  count       = local.enabled ? 1 : 0
   name        = format(var.ssm_parameter_name_format, var.ssm_path, "mq_admin_username")
   value       = local.mq_admin_user
   description = "MQ Username for the admin user"
@@ -40,6 +42,7 @@ resource "aws_ssm_parameter" "mq_master_username" {
 }
 
 resource "aws_ssm_parameter" "mq_master_password" {
+  count       = local.enabled ? 1 : 0
   name        = format(var.ssm_parameter_name_format, var.ssm_path, "mq_admin_password")
   value       = local.mq_admin_password
   description = "MQ Password for the admin user"
@@ -49,6 +52,7 @@ resource "aws_ssm_parameter" "mq_master_password" {
 }
 
 resource "aws_ssm_parameter" "mq_application_username" {
+  count       = local.enabled ? 1 : 0
   name        = format(var.ssm_parameter_name_format, var.ssm_path, "mq_application_username")
   value       = local.mq_application_user
   description = "AMQ username for the application user"
@@ -57,6 +61,7 @@ resource "aws_ssm_parameter" "mq_application_username" {
 }
 
 resource "aws_ssm_parameter" "mq_application_password" {
+  count       = local.enabled ? 1 : 0
   name        = format(var.ssm_parameter_name_format, var.ssm_path, "mq_application_password")
   value       = local.mq_application_password
   description = "AMQ password for the application user"
@@ -66,6 +71,7 @@ resource "aws_ssm_parameter" "mq_application_password" {
 }
 
 resource "aws_mq_broker" "default" {
+  count                      = local.enabled ? 1 : 0
   broker_name                = module.this.id
   deployment_mode            = var.deployment_mode
   engine_type                = var.engine_type
