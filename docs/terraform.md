@@ -16,6 +16,23 @@
 | aws | >= 2.0 |
 | random | >= 2.2.0 |
 
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| this | cloudposse/label/null | 0.24.1 |
+
+## Resources
+
+| Name |
+|------|
+| [aws_mq_broker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/mq_broker) |
+| [aws_security_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) |
+| [aws_security_group_rule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) |
+| [aws_ssm_parameter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) |
+| [random_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) |
+| [random_string](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -87,5 +104,4 @@
 | secondary\_ssl\_endpoint | AmazonMQ secondary SSL endpoint |
 | secondary\_stomp\_ssl\_endpoint | AmazonMQ secondary STOMP+SSL endpoint |
 | secondary\_wss\_endpoint | AmazonMQ secondary WSS endpoint |
-
 <!-- markdownlint-restore -->
