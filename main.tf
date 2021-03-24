@@ -102,11 +102,14 @@ resource "aws_mq_broker" "default" {
     time_zone   = var.maintenance_time_zone
   }
 
-  user {
-    username       = local.mq_admin_user
-    password       = local.mq_admin_password
-    groups         = ["admin"]
-    console_access = true
+  dynamic "user" {
+    for_each = var.engine_type == "ActiveMQ" ? ["true"] : []
+    content {
+      username       = local.mq_admin_user
+      password       = local.mq_admin_password
+      groups         = ["admin"]
+      console_access = true
+    }
   }
 
   user {
