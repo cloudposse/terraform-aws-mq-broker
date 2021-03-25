@@ -1,38 +1,42 @@
 locals {
-  enabled                        = module.this.enabled
-  mq_admin_user_enabled          = var.engine_type == "ActiveMQ" ? true : false
-  mq_admin_user_is_set           = var.mq_admin_user != null && var.mq_admin_user != "" ? true : false
-  mq_admin_user                  = local.mq_admin_user_is_set ? var.mq_admin_user : join("", random_string.mq_admin_user.*.result)
-  mq_admin_password_is_set       = var.mq_admin_password != null && var.mq_admin_password != "" ? true : false
-  mq_admin_password              = local.mq_admin_password_is_set ? var.mq_admin_password : join("", random_password.mq_admin_password.*.result)
-  mq_application_user_is_set     = var.mq_application_user != null && var.mq_application_user != "" ? true : false
-  mq_application_user            = local.mq_application_user_is_set ? var.mq_application_user : join("", random_string.mq_application_user.*.result)
-  mq_application_password_is_set = var.mq_application_password != null && var.mq_application_password != "" ? true : false
+  enabled               = module.this.enabled
+  mq_admin_user_enabled = var.engine_type == "ActiveMQ"
+
+  mq_admin_user_is_set = var.mq_admin_user != null && var.mq_admin_user != ""
+  mq_admin_user        = local.mq_admin_user_is_set ? var.mq_admin_user : join("", random_string.mq_admin_user.*.result)
+
+  mq_admin_password_is_set = var.mq_admin_password != null && var.mq_admin_password != ""
+  mq_admin_password        = local.mq_admin_password_is_set ? var.mq_admin_password : join("", random_password.mq_admin_password.*.result)
+
+  mq_application_user_is_set = var.mq_application_user != null && var.mq_application_user != ""
+  mq_application_user        = local.mq_application_user_is_set ? var.mq_application_user : join("", random_string.mq_application_user.*.result)
+
+  mq_application_password_is_set = var.mq_application_password != null && var.mq_application_password != ""
   mq_application_password        = local.mq_application_password_is_set ? var.mq_application_password : join("", random_password.mq_application_password.*.result)
 }
 
 resource "random_string" "mq_admin_user" {
-  count   = local.enabled && local.mq_admin_user_is_set == false ? 1 : 0
+  count   = local.enabled && !local.mq_admin_user_is_set ? 1 : 0
   length  = 8
   special = false
   number  = false
 }
 
 resource "random_password" "mq_admin_password" {
-  count   = local.enabled && local.mq_admin_password_is_set == false ? 1 : 0
+  count   = local.enabled && !local.mq_admin_password_is_set ? 1 : 0
   length  = 16
   special = false
 }
 
 resource "random_string" "mq_application_user" {
-  count   = local.enabled && local.mq_application_user_is_set == false ? 1 : 0
+  count   = local.enabled && !local.mq_application_user_is_set ? 1 : 0
   length  = 8
   special = false
   number  = false
 }
 
 resource "random_password" "mq_application_password" {
-  count   = local.enabled && local.mq_application_password_is_set == false ? 1 : 0
+  count   = local.enabled && !local.mq_application_password_is_set ? 1 : 0
   length  = 16
   special = false
 }
