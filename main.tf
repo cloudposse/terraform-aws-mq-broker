@@ -1,39 +1,44 @@
 locals {
-  enabled                 = module.this.enabled
-  mq_admin_user           = var.mq_admin_user != null && var.mq_admin_user != "" ? var.mq_admin_user : join("", random_string.mq_admin_user.*.result)
-  mq_admin_password       = var.mq_admin_password != null && var.mq_admin_password != "" ? var.mq_admin_password : join("", random_password.mq_admin_password.*.result)
-  mq_application_user     = var.mq_application_user != null && var.mq_application_user != "" ? var.mq_application_user : join("", random_string.mq_application_user.*.result)
-  mq_application_password = var.mq_application_password != null && var.mq_application_password != "" ? var.mq_application_password : join("", random_password.mq_application_password.*.result)
+  enabled                        = module.this.enabled
+  mq_admin_user_enabled          = var.engine_type == "ActiveMQ" ? true : false
+  mq_admin_user_is_set           = var.mq_admin_user != null && var.mq_admin_user != "" ? true : false
+  mq_admin_user                  = local.mq_admin_user_is_set ? var.mq_admin_user : join("", random_string.mq_admin_user.*.result)
+  mq_admin_password_is_set       = var.mq_admin_password != null && var.mq_admin_password != "" ? true : false
+  mq_admin_password              = local.mq_admin_password_is_set ? var.mq_admin_password : join("", random_password.mq_admin_password.*.result)
+  mq_application_user_is_set     = var.mq_application_user != null && var.mq_application_user != "" ? true : false
+  mq_application_user            = local.mq_application_user_is_set ? var.mq_application_user : join("", random_string.mq_application_user.*.result)
+  mq_application_password_is_set = var.mq_application_password != null && var.mq_application_password != "" ? true : false
+  mq_application_password        = local.mq_application_password_is_set ? var.mq_application_password : join("", random_password.mq_application_password.*.result)
 }
 
 resource "random_string" "mq_admin_user" {
-  count   = local.enabled && (var.mq_admin_user == null || var.mq_admin_user == "") ? 1 : 0
+  count   = local.enabled && local.mq_admin_user_is_set == false ? 1 : 0
   length  = 8
   special = false
   number  = false
 }
 
 resource "random_password" "mq_admin_password" {
-  count   = local.enabled && (var.mq_admin_password == null || var.mq_admin_password == "") ? 1 : 0
+  count   = local.enabled && local.mq_admin_password_is_set == false ? 1 : 0
   length  = 16
   special = false
 }
 
 resource "random_string" "mq_application_user" {
-  count   = local.enabled && (var.mq_application_user == null || var.mq_application_user == "") ? 1 : 0
+  count   = local.enabled && local.mq_application_user_is_set == false ? 1 : 0
   length  = 8
   special = false
   number  = false
 }
 
 resource "random_password" "mq_application_password" {
-  count   = local.enabled && (var.mq_application_password == null || var.mq_application_password == "") ? 1 : 0
+  count   = local.enabled && local.mq_application_password_is_set == false ? 1 : 0
   length  = 16
   special = false
 }
 
 resource "aws_ssm_parameter" "mq_master_username" {
-  count       = local.enabled ? 1 : 0
+  count       = local.enabled && local.mq_admin_user_enabled ? 1 : 0
   name        = format(var.ssm_parameter_name_format, var.ssm_path, "mq_admin_username")
   value       = local.mq_admin_user
   description = "MQ Username for the admin user"
@@ -42,7 +47,7 @@ resource "aws_ssm_parameter" "mq_master_username" {
 }
 
 resource "aws_ssm_parameter" "mq_master_password" {
-  count       = local.enabled ? 1 : 0
+  count       = local.enabled && local.mq_admin_user_enabled ? 1 : 0
   name        = format(var.ssm_parameter_name_format, var.ssm_path, "mq_admin_password")
   value       = local.mq_admin_password
   description = "MQ Password for the admin user"
@@ -103,7 +108,7 @@ resource "aws_mq_broker" "default" {
   }
 
   dynamic "user" {
-    for_each = var.engine_type == "ActiveMQ" ? ["true"] : []
+    for_each = local.mq_admin_user_enabled ? ["true"] : []
     content {
       username       = local.mq_admin_user
       password       = local.mq_admin_password
