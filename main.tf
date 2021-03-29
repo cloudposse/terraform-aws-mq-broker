@@ -23,7 +23,7 @@ resource "random_string" "mq_admin_user" {
 }
 
 resource "random_password" "mq_admin_password" {
-  count   = local.enabled && local.mq_admin_user_enabled && ! local.mq_admin_user_is_set ? 1 : 0
+  count   = local.enabled && local.mq_admin_user_enabled && ! local.mq_admin_password_is_set ? 1 : 0
   length  = 16
   special = false
 }
