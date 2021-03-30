@@ -91,6 +91,7 @@ resource "aws_mq_broker" "default" {
   publicly_accessible        = var.publicly_accessible
   security_groups            = var.use_existing_security_groups ? var.existing_security_groups : [join("", aws_security_group.default.*.id)]
   subnet_ids                 = var.subnet_ids
+  tags                       = module.this.tags
 
   dynamic "encryption_options" {
     for_each = var.encryption_enabled ? ["true"] : []
