@@ -13,6 +13,7 @@ locals {
 
   mq_application_password_is_set = var.mq_application_password != null && var.mq_application_password != ""
   mq_application_password        = local.mq_application_password_is_set ? var.mq_application_password : join("", random_password.mq_application_password.*.result)
+  mq_logs = {"general_log_enabled": var.general_log_enabled, "audit_log_enabled": var.audit_log_enabled}
 }
 
 resource "random_string" "mq_admin_user" {
@@ -105,9 +106,12 @@ resource "aws_mq_broker" "default" {
     }
   }
 
-  logs {
-    general = var.general_log_enabled
-    audit   = var.audit_log_enabled
+  dynamic "logs" {
+    for_each = var.engine_type == "RabbitMQ" ? {} : { logs = local.mq_logs }
+    content {
+      general = logs.value["general_log_enabled"]
+      audit   = logs.value["audit_log_enabled"]
+    }
   }
 
   maintenance_window_start_time {
