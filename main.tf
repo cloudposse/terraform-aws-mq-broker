@@ -13,7 +13,7 @@ locals {
 
   mq_application_password_is_set = var.mq_application_password != null && var.mq_application_password != ""
   mq_application_password        = local.mq_application_password_is_set ? var.mq_application_password : join("", random_password.mq_application_password.*.result)
-  mq_logs = {logs = {"general_log_enabled": var.general_log_enabled, "audit_log_enabled": var.audit_log_enabled}}
+  mq_logs                        = { logs = { "general_log_enabled" : var.general_log_enabled, "audit_log_enabled" : var.audit_log_enabled } }
 }
 
 resource "random_string" "mq_admin_user" {
