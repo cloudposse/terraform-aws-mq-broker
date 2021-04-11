@@ -64,6 +64,7 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 
 This module provisions the following resources:
   - ActiveMQ broker
+  - RabbitMQ broker
   - Security group rules to allow access to the broker
 
 Admin and application users are created and credentials written to SSM if not passed in as variables.
