@@ -8,6 +8,11 @@ output "broker_arn" {
   description = "AmazonMQ broker ARN"
 }
 
+output "security_group_id" {
+  value       = var.use_existing_security_groups ? null : aws_security_group.default.0.id
+  description = "The security group created by this module."
+}
+
 output "primary_console_url" {
   value       = try(aws_mq_broker.default[0].instances[0].console_url, "")
   description = "AmazonMQ active web console URL"
