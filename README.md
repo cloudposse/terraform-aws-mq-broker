@@ -1,3 +1,4 @@
+
 <!-- markdownlint-disable -->
 # terraform-aws-mq-broker [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-mq-broker.svg)](https://github.com/cloudposse/terraform-aws-mq-broker/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 <!-- markdownlint-restore -->
@@ -29,7 +30,6 @@
 
 Terraform module to provision AmazonMQ resources on AWS
 
-
 ---
 
 This project is part of our comprehensive ["SweetOps"](https://cpco.io/sweetops) approach towards DevOps.
@@ -59,7 +59,6 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 
 
 
-
 ## Introduction
 
 This module provisions the following resources:
@@ -68,6 +67,7 @@ This module provisions the following resources:
   - Security group rules to allow access to the broker
 
 Admin and application users are created and credentials written to SSM if not passed in as variables.
+
 
 ## Security & Compliance [<img src="https://cloudposse.com/wp-content/uploads/2020/11/bridgecrew.svg" width="250" align="right" />](https://bridgecrew.io/)
 
