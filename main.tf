@@ -15,7 +15,7 @@ locals {
   mq_application_password        = local.mq_application_password_is_set ? var.mq_application_password : join("", random_password.mq_application_password.*.result)
 
   mq_logs  = { logs = { "general_log_enabled" : var.general_log_enabled, "audit_log_enabled" : var.audit_log_enabled } }
-  mq_ports = var.engine_type == "ActiveMQ" ? [ 8162, 61617 ] : [ 443, 5671 ]
+  mq_ports = var.engine_type == "ActiveMQ" ? [8162, 61617] : [443, 5671]
 
   mq_security_ports = [
     for pair in setproduct(var.allowed_security_groups, local.mq_ports) : {
