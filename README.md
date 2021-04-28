@@ -1,3 +1,4 @@
+
 <!-- markdownlint-disable -->
 # terraform-aws-mq-broker [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-mq-broker.svg)](https://github.com/cloudposse/terraform-aws-mq-broker/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 <!-- markdownlint-restore -->
@@ -29,7 +30,6 @@
 
 Terraform module to provision AmazonMQ resources on AWS
 
-
 ---
 
 This project is part of our comprehensive ["SweetOps"](https://cpco.io/sweetops) approach towards DevOps.
@@ -59,7 +59,6 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 
 
 
-
 ## Introduction
 
 This module provisions the following resources:
@@ -68,6 +67,7 @@ This module provisions the following resources:
   - Security group rules to allow access to the broker
 
 Admin and application users are created and credentials written to SSM if not passed in as variables.
+
 
 ## Security & Compliance [<img src="https://cloudposse.com/wp-content/uploads/2020/11/bridgecrew.svg" width="250" align="right" />](https://bridgecrew.io/)
 
@@ -265,6 +265,7 @@ Available targets:
 | <a name="output_secondary_ssl_endpoint"></a> [secondary\_ssl\_endpoint](#output\_secondary\_ssl\_endpoint) | AmazonMQ secondary SSL endpoint |
 | <a name="output_secondary_stomp_ssl_endpoint"></a> [secondary\_stomp\_ssl\_endpoint](#output\_secondary\_stomp\_ssl\_endpoint) | AmazonMQ secondary STOMP+SSL endpoint |
 | <a name="output_secondary_wss_endpoint"></a> [secondary\_wss\_endpoint](#output\_secondary\_wss\_endpoint) | AmazonMQ secondary WSS endpoint |
+| <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | The security group created by this module. |
 <!-- markdownlint-restore -->
 
 
