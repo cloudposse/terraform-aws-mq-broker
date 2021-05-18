@@ -9,7 +9,7 @@ output "broker_arn" {
 }
 
 output "security_group_id" {
-  value       = var.use_existing_security_groups ? null : aws_security_group.default.0.id
+  value       = module.default_sg.id
   description = "The security group created by this module."
 }
 
