@@ -19,27 +19,27 @@ locals {
 }
 
 resource "random_string" "mq_admin_user" {
-  count   = local.enabled && local.mq_admin_user_enabled && !local.mq_admin_user_is_set ? 1 : 0
+  count   = local.enabled && local.mq_admin_user_enabled && ! local.mq_admin_user_is_set ? 1 : 0
   length  = 8
   special = false
   number  = false
 }
 
 resource "random_password" "mq_admin_password" {
-  count   = local.enabled && local.mq_admin_user_enabled && !local.mq_admin_password_is_set ? 1 : 0
+  count   = local.enabled && local.mq_admin_user_enabled && ! local.mq_admin_password_is_set ? 1 : 0
   length  = 16
   special = false
 }
 
 resource "random_string" "mq_application_user" {
-  count   = local.enabled && !local.mq_application_user_is_set ? 1 : 0
+  count   = local.enabled && ! local.mq_application_user_is_set ? 1 : 0
   length  = 8
   special = false
   number  = false
 }
 
 resource "random_password" "mq_application_password" {
-  count   = local.enabled && !local.mq_application_password_is_set ? 1 : 0
+  count   = local.enabled && ! local.mq_application_password_is_set ? 1 : 0
   length  = 16
   special = false
 }
@@ -101,8 +101,8 @@ resource "aws_mq_broker" "default" {
 
   security_groups = compact(
     sort(concat(
-      [module.default_sg.id],
-      var.additional_security_groups
+      [module.security_group.id],
+      var.security_groups
     ))
   )
 

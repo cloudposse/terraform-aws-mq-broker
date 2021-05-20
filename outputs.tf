@@ -9,8 +9,18 @@ output "broker_arn" {
 }
 
 output "security_group_id" {
-  value       = module.default_sg.id
-  description = "The security group created by this module."
+  value       = module.security_group.id
+  description = "AmazonMQ Security Group ID"
+}
+
+output "security_group_arn" {
+  value       = module.security_group.arn
+  description = "AmazonMQ Security Group ARN"
+}
+
+output "security_group_name" {
+  value       = module.security_group.name
+  description = "AmazonMQ Security Group name"
 }
 
 output "primary_console_url" {

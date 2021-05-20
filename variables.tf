@@ -102,7 +102,7 @@ variable "security_group_enabled" {
 
 variable "security_group_description" {
   type        = string
-  default     = "MQ Security Group"
+  default     = "AmazonMQ Security Group"
   description = "The Security Group description."
 }
 
@@ -121,7 +121,7 @@ variable "security_group_rules" {
       to_port     = 65535
       protocol    = "-1"
       cidr_blocks = ["0.0.0.0/0"]
-      description = "Allow ALL egress traffic"
+      description = "Allow all outbound traffic"
     }
   ]
   description = <<-EOT
@@ -131,8 +131,8 @@ variable "security_group_rules" {
   EOT
 }
 
-variable "additional_security_groups" {
-  description = "List of additional Security Group IDs to be allowed to connect to MQ"
+variable "security_groups" {
+  description = "List of Security Group IDs to be allowed to connect to AmazonMQ"
   type        = list(string)
   default     = []
 }
