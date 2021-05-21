@@ -132,7 +132,7 @@ variable "security_group_rules" {
 }
 
 variable "security_groups" {
-  description = "List of Security Group IDs to be allowed to connect to AmazonMQ"
+  description = "A list of Security Group IDs to associate with AmazonMQ"
   type        = list(string)
   default     = []
 }
