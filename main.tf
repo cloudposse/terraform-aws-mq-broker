@@ -14,6 +14,8 @@ locals {
   mq_application_password_is_set = var.mq_application_password != null && var.mq_application_password != ""
   mq_application_password        = local.mq_application_password_is_set ? var.mq_application_password : join("", random_password.mq_application_password.*.result)
   mq_logs                        = { logs = { "general_log_enabled" : var.general_log_enabled, "audit_log_enabled" : var.audit_log_enabled } }
+
+  security_group_enabled = module.this.enabled && var.security_group_enabled
 }
 
 resource "random_string" "mq_admin_user" {
@@ -94,9 +96,15 @@ resource "aws_mq_broker" "default" {
   auto_minor_version_upgrade = var.auto_minor_version_upgrade
   apply_immediately          = var.apply_immediately
   publicly_accessible        = var.publicly_accessible
-  security_groups            = var.use_existing_security_groups ? var.existing_security_groups : [join("", aws_security_group.default.*.id)]
   subnet_ids                 = var.subnet_ids
   tags                       = module.this.tags
+
+  security_groups = compact(
+    sort(concat(
+      [module.security_group.id],
+      var.security_groups
+    ))
+  )
 
   dynamic "encryption_options" {
     for_each = var.encryption_enabled ? ["true"] : []
