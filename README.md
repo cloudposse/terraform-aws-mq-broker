@@ -234,6 +234,8 @@ Available targets:
 | <a name="input_security_groups"></a> [security\_groups](#input\_security\_groups) | A list of Security Group IDs to associate with AmazonMQ. | `list(string)` | `[]` | no |
 | <a name="input_ssm_parameter_name_format"></a> [ssm\_parameter\_name\_format](#input\_ssm\_parameter\_name\_format) | SSM parameter name format | `string` | `"/%s/%s"` | no |
 | <a name="input_ssm_path"></a> [ssm\_path](#input\_ssm\_path) | SSM path | `string` | `"mq"` | no |
+| <a name="input_ssm_parameter_name_username"></a> [ssm_parameter_name_username](#input\_ssm_parameter_name_username) | SSM parameter name for admin username, excluding path | `string` | `mq_admin_username` | no |
+| <a name="input_ssm_parameter_name_password"></a> [ssm_parameter_name_password](#input\_ssm_parameter_name_password) | SSM parameter name for admin password, excluding path | `string` | `mq_admin_password` | no |
 | <a name="input_stage"></a> [stage](#input\_stage) | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | List of VPC subnet IDs | `list(string)` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |

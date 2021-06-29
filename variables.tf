@@ -159,6 +159,18 @@ variable "ssm_parameter_name_format" {
   description = "SSM parameter name format"
 }
 
+variable "ssm_parameter_name_username" {
+  type        = string
+  default     = "mq_admin_username"
+  description = "SSM parameter name for admin username"
+}
+
+variable "ssm_parameter_name_password" {
+  type        = string
+  default     = "mq_admin_password"
+  description = "SSM parameter name for admin password"
+}
+
 variable "ssm_path" {
   type        = string
   default     = "mq"

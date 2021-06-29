@@ -46,7 +46,7 @@ resource "random_password" "mq_application_password" {
 
 resource "aws_ssm_parameter" "mq_master_username" {
   count       = local.enabled && local.mq_admin_user_enabled ? 1 : 0
-  name        = format(var.ssm_parameter_name_format, var.ssm_path, "mq_admin_username")
+  name        = format(var.ssm_parameter_name_format, var.ssm_path, var.ssm_parameter_name_username)
   value       = local.mq_admin_user
   description = "MQ Username for the admin user"
   type        = "String"
@@ -56,7 +56,7 @@ resource "aws_ssm_parameter" "mq_master_username" {
 
 resource "aws_ssm_parameter" "mq_master_password" {
   count       = local.enabled && local.mq_admin_user_enabled ? 1 : 0
-  name        = format(var.ssm_parameter_name_format, var.ssm_path, "mq_admin_password")
+  name        = format(var.ssm_parameter_name_format, var.ssm_path, var.ssm_parameter_name_password)
   value       = local.mq_admin_password
   description = "MQ Password for the admin user"
   type        = "SecureString"
