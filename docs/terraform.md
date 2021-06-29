@@ -80,6 +80,8 @@
 | <a name="input_security_group_use_name_prefix"></a> [security\_group\_use\_name\_prefix](#input\_security\_group\_use\_name\_prefix) | Whether to create a default Security Group with unique name beginning with the normalized prefix. | `bool` | `false` | no |
 | <a name="input_security_groups"></a> [security\_groups](#input\_security\_groups) | A list of Security Group IDs to associate with AmazonMQ. | `list(string)` | `[]` | no |
 | <a name="input_ssm_parameter_name_format"></a> [ssm\_parameter\_name\_format](#input\_ssm\_parameter\_name\_format) | SSM parameter name format | `string` | `"/%s/%s"` | no |
+| <a name="input_ssm_parameter_name_password"></a> [ssm\_parameter\_name\_password](#input\_ssm\_parameter\_name\_password) | SSM parameter name for admin password | `string` | `"mq_admin_password"` | no |
+| <a name="input_ssm_parameter_name_username"></a> [ssm\_parameter\_name\_username](#input\_ssm\_parameter\_name\_username) | SSM parameter name for admin username | `string` | `"mq_admin_username"` | no |
 | <a name="input_ssm_path"></a> [ssm\_path](#input\_ssm\_path) | SSM path | `string` | `"mq"` | no |
 | <a name="input_stage"></a> [stage](#input\_stage) | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | List of VPC subnet IDs | `list(string)` | n/a | yes |
