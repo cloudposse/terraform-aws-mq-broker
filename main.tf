@@ -147,4 +147,9 @@ resource "aws_mq_broker" "default" {
     username = local.mq_application_user
     password = local.mq_application_password
   }
+
+  # NOTE: if auto_minor_version_upgrade = true, this lifecycle will prevent perpetual diffs
+  lifecycle {
+    ignore_changes = [engine_version]
+  }
 }
