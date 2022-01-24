@@ -15,31 +15,31 @@ locals {
   mq_application_password        = local.mq_application_password_is_set ? var.mq_application_password : join("", random_password.mq_application_password.*.result)
   mq_logs                        = { logs = { "general_log_enabled" : var.general_log_enabled, "audit_log_enabled" : var.audit_log_enabled } }
 
-  security_group_enabled = module.this.enabled && var.security_group_enabled
+  security_group_enabled = var.publicly_accessible == true ? false : module.this.enabled && var.security_group_enabled
 }
 
 resource "random_string" "mq_admin_user" {
-  count   = local.enabled && local.mq_admin_user_enabled && ! local.mq_admin_user_is_set ? 1 : 0
+  count   = local.enabled && local.mq_admin_user_enabled && !local.mq_admin_user_is_set ? 1 : 0
   length  = 8
   special = false
   number  = false
 }
 
 resource "random_password" "mq_admin_password" {
-  count   = local.enabled && local.mq_admin_user_enabled && ! local.mq_admin_password_is_set ? 1 : 0
+  count   = local.enabled && local.mq_admin_user_enabled && !local.mq_admin_password_is_set ? 1 : 0
   length  = 16
   special = false
 }
 
 resource "random_string" "mq_application_user" {
-  count   = local.enabled && ! local.mq_application_user_is_set ? 1 : 0
+  count   = local.enabled && !local.mq_application_user_is_set ? 1 : 0
   length  = 8
   special = false
   number  = false
 }
 
 resource "random_password" "mq_application_password" {
-  count   = local.enabled && ! local.mq_application_password_is_set ? 1 : 0
+  count   = local.enabled && !local.mq_application_password_is_set ? 1 : 0
   length  = 16
   special = false
 }
