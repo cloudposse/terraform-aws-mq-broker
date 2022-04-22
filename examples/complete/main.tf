@@ -31,16 +31,7 @@ module "mq_broker" {
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.subnets.private_subnet_ids
 
-  security_group_rules = [
-    {
-      type                     = "egress"
-      from_port                = 0
-      to_port                  = 65535
-      protocol                 = "-1"
-      cidr_blocks              = ["0.0.0.0/0"]
-      source_security_group_id = null
-      description              = "Allow all outbound trafic"
-    },
+  additional_security_group_rules = [
     {
       type                     = "ingress"
       from_port                = 0
