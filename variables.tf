@@ -94,49 +94,6 @@ variable "mq_application_password" {
   description = "Application password"
 }
 
-variable "security_group_enabled" {
-  type        = bool
-  description = "Whether to create Security Group."
-  default     = true
-}
-
-variable "security_group_description" {
-  type        = string
-  default     = "AmazonMQ Security Group"
-  description = "The Security Group description."
-}
-
-variable "security_group_use_name_prefix" {
-  type        = bool
-  default     = false
-  description = "(DEPRECATED) Whether to create a default Security Group with unique name beginning with the normalized prefix."
-}
-
-variable "security_group_rules" {
-  type = list(any)
-  default = [
-    {
-      type        = "egress"
-      from_port   = 0
-      to_port     = 65535
-      protocol    = "-1"
-      cidr_blocks = ["0.0.0.0/0"]
-      description = "Allow all outbound traffic"
-    }
-  ]
-  description = <<-EOT
-    A list of maps of Security Group rules. 
-    The values of map is fully complated with `aws_security_group_rule` resource. 
-    To get more info see https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule .
-  EOT
-}
-
-variable "security_groups" {
-  description = "A list of Security Group IDs to associate with AmazonMQ."
-  type        = list(string)
-  default     = []
-}
-
 variable "vpc_id" {
   type        = string
   description = "VPC ID to create the broker in"
