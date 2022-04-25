@@ -1,8 +1,17 @@
+variable "security_group_enabled" {
+  type        = bool
+  description = <<-EOT
+  DEPRECATED: Use `create_security_group` instead
+  Whether to create Security Group.
+  EOT
+  default     = true
+}
+
 variable "security_group_use_name_prefix" {
   type        = bool
   default     = false
   description = <<-EOT
-  DEPRECATED: Use the module's attributes instead.
+  DEPRECATED: Use `security_group_name` and `security_group_create_before_destroy = true` instead.
   Whether to create a default Security Group with unique name beginning with the normalized prefix.
   EOT
 }
