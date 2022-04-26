@@ -1,6 +1,5 @@
 locals {
   enabled = module.this.enabled
-  context = module.this.context
 
   mq_admin_user_enabled = var.engine_type == "ActiveMQ"
 

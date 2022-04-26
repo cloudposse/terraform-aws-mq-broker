@@ -13,5 +13,5 @@ module "security_group" {
   rules                      = var.additional_security_group_rules
   vpc_id                     = var.vpc_id
 
-  context = local.context
+  context = module.this.context
 }
