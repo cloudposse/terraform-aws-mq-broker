@@ -57,5 +57,7 @@ module "mq_broker" {
   kms_mq_key_arn             = var.kms_mq_key_arn
   use_aws_owned_key          = var.use_aws_owned_key
 
+  security_group_create_before_destroy = false
+
   context = module.this.context
 }
