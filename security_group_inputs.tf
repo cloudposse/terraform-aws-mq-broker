@@ -187,10 +187,10 @@ variable "additional_security_group_rules" {
 
 ## vpc_id is required, but if needed for reasons other than the security group,
 ## it should be defined in the main `variables.tf` file, not here.
-variable "vpc_id" {
-  type        = string
-  description = "The ID of the VPC where the Security Group will be created."
-}
+# variable "vpc_id" {
+#   type        = string
+#   description = "The ID of the VPC where the Security Group will be created."
+# }
 
 
 #
