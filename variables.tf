@@ -94,11 +94,6 @@ variable "mq_application_password" {
   description = "Application password"
 }
 
-variable "vpc_id" {
-  type        = string
-  description = "VPC ID to create the broker in"
-}
-
 variable "subnet_ids" {
   type        = list(string)
   description = "List of VPC subnet IDs"
