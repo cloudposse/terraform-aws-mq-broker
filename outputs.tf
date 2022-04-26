@@ -87,6 +87,7 @@ output "application_username" {
   value       = local.mq_application_user
   description = "AmazonMQ application username"
 }
+
 output "security_group_id" {
   value       = join("", module.security_group.*.id)
   description = "The ID of the created security group"

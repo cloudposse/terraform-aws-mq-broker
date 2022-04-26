@@ -12,4 +12,6 @@ module "security_group" {
   allow_all_egress           = true
   rules                      = var.additional_security_group_rules
   vpc_id                     = var.vpc_id
+
+  context = local.context
 }
