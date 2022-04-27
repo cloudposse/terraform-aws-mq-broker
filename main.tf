@@ -16,7 +16,7 @@ locals {
   mq_application_password        = local.mq_application_password_is_set ? var.mq_application_password : join("", random_password.mq_application_password.*.result)
   mq_logs                        = { logs = { "general_log_enabled" : var.general_log_enabled, "audit_log_enabled" : var.audit_log_enabled } }
 
-  security_group_enabled = var.publicly_accessible == true ? false : local.enabled && var.create_security_group
+  security_group_enabled = var.publicly_accessible ? false : local.enabled && var.create_security_group
 }
 
 resource "random_string" "mq_admin_user" {
