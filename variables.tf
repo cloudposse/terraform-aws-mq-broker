@@ -124,6 +124,32 @@ variable "ssm_path" {
   default     = "mq"
 }
 
+variable "mq_admin_user_ssm_parameter_name" {
+  type        = string
+  description = "SSM parameter name for Admin username"
+  default     = "mq_admin_username"
+}
+
+variable "mq_admin_password_ssm_parameter_name" {
+  type        = string
+  description = "SSM parameter name for Admin password"
+  default     = "mq_admin_password"
+}
+
+variable "mq_application_user_ssm_parameter_name" {
+  type        = string
+  description = "SSM parameter name for Application username"
+  default     = "mq_application_username"
+}
+
+variable "mq_application_password_ssm_parameter_name" {
+  type        = string
+  description = "SSM parameter name for Application password"
+  default     = "mq_application_password"
+}
+
+
+
 variable "kms_ssm_key_arn" {
   type        = string
   description = "ARN of the AWS KMS key used for SSM encryption"

@@ -157,14 +157,14 @@ Available targets:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 2.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 2.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.0 |
 
 ## Modules
@@ -230,9 +230,13 @@ Available targets:
 | <a name="input_maintenance_time_of_day"></a> [maintenance\_time\_of\_day](#input\_maintenance\_time\_of\_day) | The maintenance time, in 24-hour format. e.g. 02:00 | `string` | `"03:00"` | no |
 | <a name="input_maintenance_time_zone"></a> [maintenance\_time\_zone](#input\_maintenance\_time\_zone) | The maintenance time zone, in either the Country/City format, or the UTC offset format. e.g. CET | `string` | `"UTC"` | no |
 | <a name="input_mq_admin_password"></a> [mq\_admin\_password](#input\_mq\_admin\_password) | Admin password | `list(string)` | `[]` | no |
+| <a name="input_mq_admin_password_ssm_parameter_name"></a> [mq\_admin\_password\_ssm\_parameter\_name](#input\_mq\_admin\_password\_ssm\_parameter\_name) | SSM parameter name for Admin password | `string` | `"mq_admin_password"` | no |
 | <a name="input_mq_admin_user"></a> [mq\_admin\_user](#input\_mq\_admin\_user) | Admin username | `list(string)` | `[]` | no |
+| <a name="input_mq_admin_user_ssm_parameter_name"></a> [mq\_admin\_user\_ssm\_parameter\_name](#input\_mq\_admin\_user\_ssm\_parameter\_name) | SSM parameter name for Admin username | `string` | `"mq_admin_username"` | no |
 | <a name="input_mq_application_password"></a> [mq\_application\_password](#input\_mq\_application\_password) | Application password | `list(string)` | `[]` | no |
+| <a name="input_mq_application_password_ssm_parameter_name"></a> [mq\_application\_password\_ssm\_parameter\_name](#input\_mq\_application\_password\_ssm\_parameter\_name) | SSM parameter name for Application password | `string` | `"mq_application_password"` | no |
 | <a name="input_mq_application_user"></a> [mq\_application\_user](#input\_mq\_application\_user) | Application username | `list(string)` | `[]` | no |
+| <a name="input_mq_application_user_ssm_parameter_name"></a> [mq\_application\_user\_ssm\_parameter\_name](#input\_mq\_application\_user\_ssm\_parameter\_name) | SSM parameter name for Application username | `string` | `"mq_application_username"` | no |
 | <a name="input_name"></a> [name](#input\_name) | ID element. Usually the component or solution name, e.g. 'app' or 'jenkins'.<br>This is the only ID element not also included as a `tag`.<br>The "name" tag is set to the full `id` string. There is no tag with the value of the `name` input. | `string` | `null` | no |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | ID element. Usually an abbreviation of your organization name, e.g. 'eg' or 'cp', to help ensure generated IDs are globally unique | `string` | `null` | no |
 | <a name="input_overwrite_ssm_parameter"></a> [overwrite\_ssm\_parameter](#input\_overwrite\_ssm\_parameter) | Whether to overwrite an existing SSM parameter | `bool` | `true` | no |
