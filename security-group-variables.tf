@@ -16,6 +16,42 @@ variable "associated_security_group_ids" {
     EOT
 }
 
+variable "allowed_security_group_ids" {
+  type        = list(string)
+  default     = []
+  description = <<-EOT
+    A list of IDs of Security Groups to allow access to the security group created by this module.
+    The length of this list must be known at "plan" time.
+    EOT
+}
+
+variable "allowed_cidr_blocks" {
+  type        = list(string)
+  default     = []
+  description = <<-EOT
+    A list of IPv4 CIDRs to allow access to the security group created by this module.
+    The length of this list must be known at "plan" time.
+    EOT
+}
+
+variable "allowed_ipv6_cidr_blocks" {
+  type        = list(string)
+  default     = []
+  description = <<-EOT
+    A list of IPv6 CIDRs to allow access to the security group created by this module.
+    The length of this list must be known at "plan" time.
+    EOT
+}
+
+variable "allowed_ipv6_prefix_list_ids" {
+  type        = list(string)
+  default     = []
+  description = <<-EOT
+    A list of IPv6 Prefix Lists IDs to allow access to the security group created by this module.
+    The length of this list must be known at "plan" time.
+    EOT
+}
+
 variable "security_group_name" {
   type        = list(string)
   default     = []
@@ -88,8 +124,3 @@ variable "additional_security_group_rules" {
 # - It is a convenience and ultimately provides no rules that cannot be provided via `additional_security_group_rules`
 # - It is complicated and can, in some situations, create problems for Terraform `for_each`
 # - It is difficult to document and easy to make mistakes using it
-
-variable "vpc_id" {
-  type        = string
-  description = "The ID of the VPC where the Security Group will be created."
-}

@@ -1,52 +1,51 @@
 locals {
   enabled = module.this.enabled
 
-  mq_admin_user_enabled = var.engine_type == "ActiveMQ"
+  mq_admin_user_enabled = local.enabled && var.engine_type == "ActiveMQ"
 
-  mq_admin_user_is_set = var.mq_admin_user != null && var.mq_admin_user != ""
-  mq_admin_user        = local.mq_admin_user_is_set ? var.mq_admin_user : join("", random_string.mq_admin_user.*.result)
+  mq_admin_user_needed = local.mq_admin_user_enabled && length(var.mq_admin_user) == 0
+  mq_admin_user        = local.mq_admin_user_needed ? random_pet.mq_admin_user[0].id : try(var.mq_admin_user[0], "")
 
-  mq_admin_password_is_set = var.mq_admin_password != null && var.mq_admin_password != ""
-  mq_admin_password        = local.mq_admin_password_is_set ? var.mq_admin_password : join("", random_password.mq_admin_password.*.result)
+  mq_admin_password_needed = local.mq_admin_user_enabled && length(var.mq_admin_password) == 0
+  mq_admin_password        = local.mq_admin_password_needed ? random_password.mq_admin_password[0].result : try(var.mq_admin_password[0], "")
 
-  mq_application_user_is_set = var.mq_application_user != null && var.mq_application_user != ""
-  mq_application_user        = local.mq_application_user_is_set ? var.mq_application_user : join("", random_string.mq_application_user.*.result)
+  mq_application_user_needed = local.enabled && length(var.mq_application_user) == 0
+  mq_application_user        = local.mq_application_user_needed ? random_pet.mq_application_user[0].id : try(var.mq_application_user[0], "")
 
-  mq_application_password_is_set = var.mq_application_password != null && var.mq_application_password != ""
-  mq_application_password        = local.mq_application_password_is_set ? var.mq_application_password : join("", random_password.mq_application_password.*.result)
-  mq_logs                        = { logs = { "general_log_enabled" : var.general_log_enabled, "audit_log_enabled" : var.audit_log_enabled } }
+  mq_application_password_needed = local.enabled && length(var.mq_application_password) == 0
+  mq_application_password        = local.mq_application_password_needed ? random_password.mq_application_password[0].result : try(var.mq_application_password[0], "")
 
-  security_group_enabled = var.publicly_accessible ? false : local.enabled && var.create_security_group
+  mq_logs = { logs = { "general_log_enabled" : var.general_log_enabled, "audit_log_enabled" : var.audit_log_enabled } }
+
+  broker_security_groups = try(sort(compact(concat([module.security_group.id], local.additional_security_group_ids))), [])
 }
 
-resource "random_string" "mq_admin_user" {
-  count   = local.enabled && local.mq_admin_user_enabled && !local.mq_admin_user_is_set ? 1 : 0
-  length  = 8
-  special = false
-  number  = false
+resource "random_pet" "mq_admin_user" {
+  count     = local.mq_admin_user_needed ? 1 : 0
+  length    = 2
+  separator = "-"
 }
 
 resource "random_password" "mq_admin_password" {
-  count   = local.enabled && local.mq_admin_user_enabled && !local.mq_admin_password_is_set ? 1 : 0
-  length  = 16
+  count   = local.mq_admin_password_needed ? 1 : 0
+  length  = 24
   special = false
 }
 
-resource "random_string" "mq_application_user" {
-  count   = local.enabled && !local.mq_application_user_is_set ? 1 : 0
-  length  = 8
-  special = false
-  number  = false
+resource "random_pet" "mq_application_user" {
+  count     = local.mq_application_user_needed ? 1 : 0
+  length    = 2
+  separator = "-"
 }
 
 resource "random_password" "mq_application_password" {
-  count   = local.enabled && !local.mq_application_password_is_set ? 1 : 0
-  length  = 16
+  count   = local.mq_application_password_needed ? 1 : 0
+  length  = 24
   special = false
 }
 
 resource "aws_ssm_parameter" "mq_master_username" {
-  count       = local.enabled && local.mq_admin_user_enabled ? 1 : 0
+  count       = local.mq_admin_user_enabled ? 1 : 0
   name        = format(var.ssm_parameter_name_format, var.ssm_path, "mq_admin_username")
   value       = local.mq_admin_user
   description = "MQ Username for the admin user"
@@ -56,7 +55,7 @@ resource "aws_ssm_parameter" "mq_master_username" {
 }
 
 resource "aws_ssm_parameter" "mq_master_password" {
-  count       = local.enabled && local.mq_admin_user_enabled ? 1 : 0
+  count       = local.mq_admin_user_enabled ? 1 : 0
   name        = format(var.ssm_parameter_name_format, var.ssm_path, "mq_admin_password")
   value       = local.mq_admin_password
   description = "MQ Password for the admin user"
@@ -100,12 +99,7 @@ resource "aws_mq_broker" "default" {
   subnet_ids                 = var.subnet_ids
   tags                       = module.this.tags
 
-  security_groups = compact(
-    sort(concat(
-      [module.security_group.id],
-      var.security_groups
-    ))
-  )
+  security_groups = local.broker_security_groups
 
   dynamic "encryption_options" {
     for_each = var.encryption_enabled ? ["true"] : []

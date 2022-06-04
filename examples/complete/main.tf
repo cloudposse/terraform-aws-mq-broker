@@ -4,7 +4,7 @@ provider "aws" {
 
 module "vpc" {
   source  = "cloudposse/vpc/aws"
-  version = "0.28.1"
+  version = "1.1.0"
 
   cidr_block = "172.16.0.0/16"
 
@@ -13,7 +13,7 @@ module "vpc" {
 
 module "subnets" {
   source  = "cloudposse/dynamic-subnets/aws"
-  version = "0.39.8"
+  version = "1.0.0"
 
   availability_zones   = var.availability_zones
   vpc_id               = module.vpc.vpc_id
@@ -31,17 +31,8 @@ module "mq_broker" {
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.subnets.private_subnet_ids
 
-  additional_security_group_rules = [
-    {
-      type                     = "ingress"
-      from_port                = 0
-      to_port                  = 65535
-      protocol                 = "tcp"
-      cidr_blocks              = []
-      source_security_group_id = module.vpc.vpc_default_security_group_id
-      description              = "Allow ingress traffic to AmazonMQ from trusted Security Groups"
-    }
-  ]
+  allowed_security_group_ids = [module.vpc.vpc_default_security_group_id]
+  allowed_ingress_ports      = [8162, 5671]
 
   apply_immediately          = var.apply_immediately
   auto_minor_version_upgrade = var.auto_minor_version_upgrade
@@ -57,7 +48,9 @@ module "mq_broker" {
   kms_mq_key_arn             = var.kms_mq_key_arn
   use_aws_owned_key          = var.use_aws_owned_key
 
-  security_group_create_before_destroy = false
+  ssm_path = "eg/mq/${var.attributes[0]}"
+
+  security_group_create_before_destroy = true
 
   context = module.this.context
 }

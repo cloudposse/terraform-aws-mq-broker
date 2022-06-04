@@ -89,16 +89,16 @@ output "application_username" {
 }
 
 output "security_group_id" {
-  value       = join("", module.security_group.*.id)
+  value       = module.security_group.id
   description = "The ID of the created security group"
 }
 
 output "security_group_arn" {
-  value       = join("", module.security_group.*.arn)
+  value       = module.security_group.arn
   description = "The ARN of the created security group"
 }
 
 output "security_group_name" {
-  value       = join("", module.security_group.*.name)
+  value       = module.security_group.name
   description = "The name of the created security group"
 }
