@@ -14,7 +14,7 @@ destroyed and replaced with new ones.
 The simplest migration path is to update to the new version, allowing
 the new defaults to take effect, and then moving the existing
 security group to the new "resource address". (More difficult but
-less disruptive migration is detailed below under )
+less disruptive migration is detailed below under ["Migration With Minimal Disruption"](#migration-with-minimal-disruption).)
 
 - Modify your module reference to refer to the new version
 - Run `terraform plan`
@@ -119,7 +119,7 @@ with your actual security group ID):
 
 ```bash
 SECURITY_GROUP_ID=sg-1234567890abcdef0
-tf import 'module.mq_broker.module.security_group.aws_security_group_rule.keyed["_allow_all_egress_"]' \
+terraform import 'module.mq_broker.module.security_group.aws_security_group_rule.keyed["_allow_all_egress_"]' \
    ${SECURITY_GROUP_ID}_egress_all_0_65536_0.0.0.0/0_::/0
 ```
 
@@ -139,18 +139,29 @@ you may want or need to update your code in order to adapt to changed or depreca
 * `existing_security_groups` is deprecated. Use `associated_security_group_ids` instead
 * `use_existing_security_groups` is deprecated. Use `create_security_group` instead.
 * The MQ User configuration variables
-  - `mq_admin_user`
-  - `mq_admin_password`
-  - `mq_application_user`
-  - `mq_application_password`
+   - `mq_admin_user`
+   - `mq_admin_password`
+   - `mq_application_user`
+   - `mq_application_password`
 
   have changed from `string` to `list(string)`. Furthermore, the length of the
   generated passwords has changed, and user names are now human-friendly "pet"
-  names instead of random strings. If you were setting them before, you need
-  to change them lists. If you were not setting them before but want to preserve
-  the old values, you need to set to the old values explicitly.
+  names instead of random strings. If you were not setting them before but want
+  to preserve the old values, you need to set to the old values explicitly. 
+  If you were setting them before, you need to put brackets around the values 
+  to convert them from `string` to `list(string)`. For example, change:
+
+```hcl
+mq_admin_user = "admin"
+```
+
+  to:
+
+```hcl
+mq_admin_user = ["admin"]
+```
 
 ## References
 
-* https://github.com/cloudposse/terraform-aws-security-group/releases/tag/0.4.0
+* `terraform-aws-security-group` [v0.4.0 Release Notes](https://github.com/cloudposse/terraform-aws-security-group/releases/tag/0.4.0)
 * https://github.com/hashicorp/terraform-provider-aws/issues/25173
