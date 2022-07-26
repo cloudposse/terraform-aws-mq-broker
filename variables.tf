@@ -183,3 +183,22 @@ variable "allowed_ingress_ports" {
     EOT
   default     = []
 }
+
+variable "mq_additional_users" {
+  type        = list(any)
+  description = "Additional MQ users"
+  default     = []
+}
+
+variable "ssm_additional_users_parameter_name_format" {
+  type        = string
+  description = "SSM parameter name format"
+  default     = "/%s/%s/%s"
+}
+
+variable "mq_configuration" {
+  type        = list(any)
+  description = "Custom MQ configuration"
+  default     = []
+}
+

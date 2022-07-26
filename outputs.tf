@@ -88,6 +88,12 @@ output "application_username" {
   description = "AmazonMQ application username"
 }
 
+output "additional_usernames" {
+  #value       = { for user in var.mq_additional_users : user.name => user }
+  value       = [for user in var.mq_additional_users : user.name]
+  description = "AmazonMQ additional users usernames"
+}
+
 output "security_group_id" {
   value       = module.security_group.id
   description = "The ID of the created security group"
