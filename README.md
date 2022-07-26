@@ -179,10 +179,14 @@ Available targets:
 | Name | Type |
 |------|------|
 | [aws_mq_broker.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/mq_broker) | resource |
+| [aws_mq_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/mq_configuration) | resource |
+| [aws_ssm_parameter.mq_additional_users](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.mq_additional_users_password](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.mq_application_password](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.mq_application_username](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.mq_master_password](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.mq_master_username](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [random_password.mq_additional_users_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_password.mq_admin_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_password.mq_application_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_pet.mq_admin_user](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) | resource |
@@ -229,6 +233,7 @@ Available targets:
 | <a name="input_maintenance_day_of_week"></a> [maintenance\_day\_of\_week](#input\_maintenance\_day\_of\_week) | The maintenance day of the week. e.g. MONDAY, TUESDAY, or WEDNESDAY | `string` | `"SUNDAY"` | no |
 | <a name="input_maintenance_time_of_day"></a> [maintenance\_time\_of\_day](#input\_maintenance\_time\_of\_day) | The maintenance time, in 24-hour format. e.g. 02:00 | `string` | `"03:00"` | no |
 | <a name="input_maintenance_time_zone"></a> [maintenance\_time\_zone](#input\_maintenance\_time\_zone) | The maintenance time zone, in either the Country/City format, or the UTC offset format. e.g. CET | `string` | `"UTC"` | no |
+| <a name="input_mq_additional_users"></a> [mq\_additional\_users](#input\_mq\_additional\_users) | Additional MQ users | `list(any)` | `[]` | no |
 | <a name="input_mq_admin_password"></a> [mq\_admin\_password](#input\_mq\_admin\_password) | Admin password | `list(string)` | `[]` | no |
 | <a name="input_mq_admin_password_ssm_parameter_name"></a> [mq\_admin\_password\_ssm\_parameter\_name](#input\_mq\_admin\_password\_ssm\_parameter\_name) | SSM parameter name for Admin password | `string` | `"mq_admin_password"` | no |
 | <a name="input_mq_admin_user"></a> [mq\_admin\_user](#input\_mq\_admin\_user) | Admin username | `list(string)` | `[]` | no |
@@ -237,6 +242,7 @@ Available targets:
 | <a name="input_mq_application_password_ssm_parameter_name"></a> [mq\_application\_password\_ssm\_parameter\_name](#input\_mq\_application\_password\_ssm\_parameter\_name) | SSM parameter name for Application password | `string` | `"mq_application_password"` | no |
 | <a name="input_mq_application_user"></a> [mq\_application\_user](#input\_mq\_application\_user) | Application username | `list(string)` | `[]` | no |
 | <a name="input_mq_application_user_ssm_parameter_name"></a> [mq\_application\_user\_ssm\_parameter\_name](#input\_mq\_application\_user\_ssm\_parameter\_name) | SSM parameter name for Application username | `string` | `"mq_application_username"` | no |
+| <a name="input_mq_configuration"></a> [mq\_configuration](#input\_mq\_configuration) | Custom MQ configuration | `list(any)` | `[]` | no |
 | <a name="input_name"></a> [name](#input\_name) | ID element. Usually the component or solution name, e.g. 'app' or 'jenkins'.<br>This is the only ID element not also included as a `tag`.<br>The "name" tag is set to the full `id` string. There is no tag with the value of the `name` input. | `string` | `null` | no |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | ID element. Usually an abbreviation of your organization name, e.g. 'eg' or 'cp', to help ensure generated IDs are globally unique | `string` | `null` | no |
 | <a name="input_overwrite_ssm_parameter"></a> [overwrite\_ssm\_parameter](#input\_overwrite\_ssm\_parameter) | Whether to overwrite an existing SSM parameter | `bool` | `true` | no |
@@ -247,6 +253,7 @@ Available targets:
 | <a name="input_security_group_delete_timeout"></a> [security\_group\_delete\_timeout](#input\_security\_group\_delete\_timeout) | How long to retry on `DependencyViolation` errors during security group deletion from<br>lingering ENIs left by certain AWS services such as Elastic Load Balancing. | `string` | `"15m"` | no |
 | <a name="input_security_group_description"></a> [security\_group\_description](#input\_security\_group\_description) | The description to assign to the created Security Group.<br>Warning: Changing the description causes the security group to be replaced. | `string` | `"Managed by Terraform"` | no |
 | <a name="input_security_group_name"></a> [security\_group\_name](#input\_security\_group\_name) | The name to assign to the created security group. Must be unique within the VPC.<br>If not provided, will be derived from the `null-label.context` passed in.<br>If `create_before_destroy` is true, will be used as a name prefix. | `list(string)` | `[]` | no |
+| <a name="input_ssm_additional_users_parameter_name_format"></a> [ssm\_additional\_users\_parameter\_name\_format](#input\_ssm\_additional\_users\_parameter\_name\_format) | SSM parameter name format | `string` | `"/%s/%s/%s"` | no |
 | <a name="input_ssm_parameter_name_format"></a> [ssm\_parameter\_name\_format](#input\_ssm\_parameter\_name\_format) | SSM parameter name format | `string` | `"/%s/%s"` | no |
 | <a name="input_ssm_path"></a> [ssm\_path](#input\_ssm\_path) | The first parameter to substitute in `ssm_parameter_name_format` | `string` | `"mq"` | no |
 | <a name="input_stage"></a> [stage](#input\_stage) | ID element. Usually used to indicate role, e.g. 'prod', 'staging', 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
@@ -261,6 +268,7 @@ Available targets:
 
 | Name | Description |
 |------|-------------|
+| <a name="output_additional_usernames"></a> [additional\_usernames](#output\_additional\_usernames) | AmazonMQ additional users usernames |
 | <a name="output_admin_username"></a> [admin\_username](#output\_admin\_username) | AmazonMQ admin username |
 | <a name="output_application_username"></a> [application\_username](#output\_application\_username) | AmazonMQ application username |
 | <a name="output_broker_arn"></a> [broker\_arn](#output\_broker\_arn) | AmazonMQ broker ARN |
