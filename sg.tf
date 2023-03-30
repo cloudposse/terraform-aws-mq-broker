@@ -58,6 +58,7 @@ module "security_group" {
   enabled                       = local.create_security_group
   security_group_name           = var.security_group_name
   create_before_destroy         = var.security_group_create_before_destroy
+  preserve_security_group_id    = var.preserve_security_group_id
   security_group_create_timeout = var.security_group_create_timeout
   security_group_delete_timeout = var.security_group_delete_timeout
 
