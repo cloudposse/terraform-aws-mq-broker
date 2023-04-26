@@ -6,8 +6,10 @@ locals {
   mq_admin_user_needed = local.mq_admin_user_enabled && length(var.mq_admin_user) == 0
   mq_admin_user        = local.mq_admin_user_needed ? random_pet.mq_admin_user[0].id : try(var.mq_admin_user[0], "")
 
-  mq_admin_password_needed = local.mq_admin_user_enabled && length(var.mq_admin_password) == 0
+  mq_admin_password_needed = local.mq_admin_user_enabled && length(var.mq_admin_password) == 0 && length(var.mq_admin_user) == 0
   mq_admin_password        = local.mq_admin_password_needed ? random_password.mq_admin_password[0].result : try(var.mq_admin_password[0], "")
+
+  indexed_users = { for idx, user in (length(var.mq_admin_user) > 0 ? var.mq_admin_user : [local.mq_admin_user]) : idx => user }
 
   mq_application_user_needed = local.enabled && length(var.mq_application_user) == 0
   mq_application_user        = local.mq_application_user_needed ? random_pet.mq_application_user[0].id : try(var.mq_application_user[0], "")
@@ -27,7 +29,7 @@ resource "random_pet" "mq_admin_user" {
 }
 
 resource "random_password" "mq_admin_password" {
-  count   = local.mq_admin_password_needed ? 1 : 0
+  count   = local.mq_admin_password_needed ? 1 : (length(var.mq_admin_user) > 0 ? length(var.mq_admin_user) : 0)
   length  = 24
   special = false
 }
@@ -45,20 +47,28 @@ resource "random_password" "mq_application_password" {
 }
 
 resource "aws_ssm_parameter" "mq_master_username" {
-  count       = local.mq_admin_user_enabled ? 1 : 0
-  name        = format(var.ssm_parameter_name_format, var.ssm_path, var.mq_admin_user_ssm_parameter_name)
+  count       = local.mq_admin_user_enabled ? (length(var.mq_admin_user) > 0 ? length(var.mq_admin_user) : 1) : 0
+  name        = format(
+                  var.ssm_parameter_name_format, 
+                  var.ssm_path, 
+                  (length(var.mq_admin_user) > 0 ? "${var.mq_admin_user[count.index]}_username" : var.mq_admin_user_ssm_parameter_name)
+                )
   value       = local.mq_admin_user
-  description = "MQ Username for the admin user"
+  description = "MQ Username for a user"
   type        = "String"
   overwrite   = var.overwrite_ssm_parameter
   tags        = module.this.tags
 }
 
 resource "aws_ssm_parameter" "mq_master_password" {
-  count       = local.mq_admin_user_enabled ? 1 : 0
-  name        = format(var.ssm_parameter_name_format, var.ssm_path, var.mq_admin_password_ssm_parameter_name)
-  value       = local.mq_admin_password
-  description = "MQ Password for the admin user"
+  count       = local.mq_admin_user_enabled ? (length(var.mq_admin_user) > 0 ? length(var.mq_admin_user) : 1) : 0
+  name        = format(
+                  var.ssm_parameter_name_format, 
+                  var.ssm_path, 
+                  (length(var.mq_admin_user) > 0 ? "${var.mq_admin_user[count.index]}_password" : var.mq_admin_password_ssm_parameter_name)
+                )
+  value       = random_password.mq_admin_password[count.index].result
+  description = "MQ Password for a user"
   type        = "SecureString"
   key_id      = var.kms_ssm_key_arn
   overwrite   = var.overwrite_ssm_parameter
@@ -129,10 +139,10 @@ resource "aws_mq_broker" "default" {
   }
 
   dynamic "user" {
-    for_each = local.mq_admin_user_enabled ? ["true"] : []
+    for_each = local.indexed_users
     content {
-      username       = local.mq_admin_user
-      password       = local.mq_admin_password
+      username       = user.value
+      password       = random_password.mq_admin_password[user.key].result
       groups         = ["admin"]
       console_access = true
     }
