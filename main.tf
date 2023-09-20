@@ -86,6 +86,19 @@ resource "aws_ssm_parameter" "mq_application_password" {
   tags        = module.this.tags
 }
 
+locals {
+  configuration_data_create = var.configuration_data == null ? [] : [1]
+}
+
+resource "aws_mq_configuration" "default" {
+  count          = local.enabled ? length(local.configuration_data_create) : 0
+  description    = "Rabbitmq Configuration for ${module.this.id}"
+  name           = "${module.this.id}_default_config"
+  engine_type    = var.engine_type
+  engine_version = var.engine_version
+  data           = var.configuration_data
+}
+
 resource "aws_mq_broker" "default" {
   count                      = local.enabled ? 1 : 0
   broker_name                = module.this.id
@@ -100,6 +113,14 @@ resource "aws_mq_broker" "default" {
   tags                       = module.this.tags
 
   security_groups = local.broker_security_groups
+
+  dynamic "configuration" {
+    for_each = local.configuration_data_create
+    content {
+      id       = aws_mq_configuration.default.id
+      revision = aws_mq_configuration.default.latest_revision
+    }
+  }
 
   dynamic "encryption_options" {
     for_each = var.encryption_enabled ? ["true"] : []
