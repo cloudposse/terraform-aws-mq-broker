@@ -117,8 +117,8 @@ resource "aws_mq_broker" "default" {
   dynamic "configuration" {
     for_each = local.configuration_data_create
     content {
-      id       = aws_mq_configuration.default.id
-      revision = aws_mq_configuration.default.latest_revision
+      id       = aws_mq_configuration.default[0].id
+      revision = aws_mq_configuration.default[0].latest_revision
     }
   }
 
