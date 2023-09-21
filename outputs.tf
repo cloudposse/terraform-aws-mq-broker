@@ -88,9 +88,9 @@ output "application_username" {
   description = "AmazonMQ application username"
 }
 
-output "mq_application_password" {
+output "application_password" {
   value       = local.mq_application_password
-  description = "AmazonMQ application username"
+  description = "AmazonMQ application password"
   sensitive   = true
 }
 
