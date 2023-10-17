@@ -44,6 +44,12 @@ resource "random_password" "mq_application_password" {
   special = false
 }
 
+resource "random_password" "mq_additional_users_password" {
+  for_each = { for user in var.mq_additional_users : user.name => user if lookup(user, "password", null) == null }
+  length   = 24
+  special  = false
+}
+
 resource "aws_ssm_parameter" "mq_master_username" {
   count       = local.mq_admin_user_enabled ? 1 : 0
   name        = format(var.ssm_parameter_name_format, var.ssm_path, var.mq_admin_user_ssm_parameter_name)
@@ -80,6 +86,27 @@ resource "aws_ssm_parameter" "mq_application_password" {
   name        = format(var.ssm_parameter_name_format, var.ssm_path, var.mq_application_password_ssm_parameter_name)
   value       = local.mq_application_password
   description = "AMQ password for the application user"
+  type        = "SecureString"
+  key_id      = var.kms_ssm_key_arn
+  overwrite   = var.overwrite_ssm_parameter
+  tags        = module.this.tags
+}
+
+resource "aws_ssm_parameter" "mq_additional_users" {
+  for_each    = { for user in var.mq_additional_users : user.name => user }
+  name        = format(var.ssm_additional_users_parameter_name_format, var.ssm_path, "mq_additional_users", each.value.name)
+  value       = each.value.name
+  description = "AMQ username for the ${each.value.name} user"
+  type        = "String"
+  overwrite   = var.overwrite_ssm_parameter
+  tags        = module.this.tags
+}
+
+resource "aws_ssm_parameter" "mq_additional_users_password" {
+  for_each    = { for user in var.mq_additional_users : user.name => user }
+  name        = format(var.ssm_additional_users_parameter_name_format, var.ssm_path, "mq_additional_user_password", each.value.name)
+  value       = lookup(each.value, "password", null) == null ? random_password.mq_additional_users_password[each.value.name].result : each.value.password
+  description = "AMQ password for the ${each.value.name} user"
   type        = "SecureString"
   key_id      = var.kms_ssm_key_arn
   overwrite   = var.overwrite_ssm_parameter
@@ -138,8 +165,17 @@ resource "aws_mq_broker" "default" {
     }
   }
 
+  dynamic "user" {
+    for_each = { for user in var.mq_additional_users : user.name => user }
+    content {
+      username       = user.value.name
+      password       = lookup(user.value, "password", null) == null ? random_password.mq_additional_users_password[user.value.name].result : user.value.password
+      groups         = user.value.groups
+      console_access = lookup(user.value, "console_access", false)
+    }
+  }
+
   user {
     username = local.mq_application_user
     password = local.mq_application_password
   }
-}

@@ -179,10 +179,13 @@ Available targets:
 | Name | Type |
 |------|------|
 | [aws_mq_broker.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/mq_broker) | resource |
+| [aws_ssm_parameter.mq_additional_users](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.mq_additional_users_password](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.mq_application_password](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.mq_application_username](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.mq_master_password](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.mq_master_username](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [random_password.mq_additional_users_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_password.mq_admin_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_password.mq_application_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_pet.mq_admin_user](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) | resource |
@@ -257,6 +260,8 @@ Available targets:
 | <a name="input_use_aws_owned_key"></a> [use\_aws\_owned\_key](#input\_use\_aws\_owned\_key) | Boolean to enable an AWS owned Key Management Service (KMS) Customer Master Key (CMK) for Amazon MQ encryption that is not in your account | `bool` | `true` | no |
 | <a name="input_use_existing_security_groups"></a> [use\_existing\_security\_groups](#input\_use\_existing\_security\_groups) | DEPRECATED: Use `create_security_group` instead.<br>Historical description: Set to `true` to disable Security Group creation | `bool` | `null` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The ID of the VPC to create the broker in | `string` | n/a | yes |
+| <a name="input_ssm_additional_users_parameter_name_format"></a> [ssm\_additional\_users\_parameter\_name\_format](#input\_ssm\_additional\_users\_parameter\_name\_format) | SSM parameter name format | `string` | `"/%s/%s/%s"` | no |
+| <a name="input_mq_additional_users"></a> [mq\_additional\_users](#input\_mq\_additional\_users) | Additional MQ users | `list(any)` | `[]` | no |
 
 ## Outputs
 
