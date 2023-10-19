@@ -179,3 +179,4 @@ resource "aws_mq_broker" "default" {
     username = local.mq_application_user
     password = local.mq_application_password
   }
+}
