@@ -169,3 +169,9 @@ variable "use_aws_owned_key" {
   default     = true
   description = "Boolean to enable an AWS owned Key Management Service (KMS) Customer Master Key (CMK) for Amazon MQ encryption that is not in your account"
 }
+
+variable "broker_name" {
+  type        = string
+  description = "The name of the broker. If omitted, it will be set to the value of `module.this.id`"
+  default     = ""
+}
