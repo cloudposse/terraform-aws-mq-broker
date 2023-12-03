@@ -183,3 +183,9 @@ variable "allowed_ingress_ports" {
     EOT
   default     = []
 }
+
+variable "broker_name" {
+  type        = string
+  description = "The name of the broker. If omitted, it will be set to the value of `module.this.id`"
+  default     = ""
+}

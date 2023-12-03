@@ -88,7 +88,7 @@ resource "aws_ssm_parameter" "mq_application_password" {
 
 resource "aws_mq_broker" "default" {
   count                      = local.enabled ? 1 : 0
-  broker_name                = module.this.id
+  broker_name                = var.broker_name != "" ? var.broker_name : module.this.id
   deployment_mode            = var.deployment_mode
   engine_type                = var.engine_type
   engine_version             = var.engine_version
