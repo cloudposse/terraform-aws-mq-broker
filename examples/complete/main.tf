@@ -31,6 +31,8 @@ module "mq_broker" {
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.subnets.private_subnet_ids
 
+  broker_name = var.broker_name
+
   allowed_security_group_ids = [module.vpc.vpc_default_security_group_id]
   allowed_ingress_ports      = [8162, 5671]
 
