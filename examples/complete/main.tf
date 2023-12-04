@@ -28,7 +28,6 @@ module "subnets" {
 module "mq_broker" {
   source = "../../"
 
-  broker_name = var.broker_name
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.subnets.private_subnet_ids
 

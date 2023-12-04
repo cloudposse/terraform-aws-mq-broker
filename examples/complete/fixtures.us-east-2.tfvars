@@ -8,8 +8,6 @@ stage = "test"
 
 name = "mq-broker"
 
-broker_name = "example-broker"
-
 apply_immediately = true
 
 auto_minor_version_upgrade = true
