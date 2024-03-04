@@ -25,7 +25,7 @@ variable "engine_type" {
 variable "engine_version" {
   type        = string
   description = "The version of the broker engine. See https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/broker-engine.html for more details"
-  default     = "5.15.14"
+  default     = "5.17.6"
 }
 
 variable "host_instance_type" {
