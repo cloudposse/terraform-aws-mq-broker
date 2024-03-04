@@ -50,7 +50,6 @@ resource "aws_ssm_parameter" "mq_master_username" {
   value       = local.mq_admin_user
   description = "MQ Username for the admin user"
   type        = "String"
-  overwrite   = var.overwrite_ssm_parameter
   tags        = module.this.tags
 }
 
@@ -61,7 +60,6 @@ resource "aws_ssm_parameter" "mq_master_password" {
   description = "MQ Password for the admin user"
   type        = "SecureString"
   key_id      = var.kms_ssm_key_arn
-  overwrite   = var.overwrite_ssm_parameter
   tags        = module.this.tags
 }
 
@@ -71,7 +69,6 @@ resource "aws_ssm_parameter" "mq_application_username" {
   value       = local.mq_application_user
   description = "AMQ username for the application user"
   type        = "String"
-  overwrite   = var.overwrite_ssm_parameter
   tags        = module.this.tags
 }
 
@@ -82,7 +79,6 @@ resource "aws_ssm_parameter" "mq_application_password" {
   description = "AMQ password for the application user"
   type        = "SecureString"
   key_id      = var.kms_ssm_key_arn
-  overwrite   = var.overwrite_ssm_parameter
   tags        = module.this.tags
 }
 
