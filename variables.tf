@@ -106,12 +106,6 @@ variable "subnet_ids" {
   description = "List of VPC subnet IDs"
 }
 
-variable "overwrite_ssm_parameter" {
-  type        = bool
-  description = "Whether to overwrite an existing SSM parameter"
-  default     = true
-}
-
 variable "ssm_parameter_name_format" {
   type        = string
   description = "SSM parameter name format"
