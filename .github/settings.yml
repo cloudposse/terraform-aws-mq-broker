@@ -5,3 +5,4 @@ repository:
   description: Terraform module for provisioning an AmazonMQ broker
   homepage: https://cloudposse.com/accelerate
   topics: ""
+
