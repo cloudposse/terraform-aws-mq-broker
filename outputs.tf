@@ -88,6 +88,12 @@ output "application_username" {
   description = "AmazonMQ application username"
 }
 
+output "application_password" {
+  value       = local.mq_application_password
+  description = "AmazonMQ application password"
+  sensitive   = true
+}
+
 output "security_group_id" {
   value       = module.security_group.id
   description = "The ID of the created security group"
