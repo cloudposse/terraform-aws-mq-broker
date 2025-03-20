@@ -177,3 +177,9 @@ variable "allowed_ingress_ports" {
     EOT
   default     = []
 }
+
+variable "configuration_data" {
+  type        = string
+  description = "data value for configuration"
+  default     = null
+}
