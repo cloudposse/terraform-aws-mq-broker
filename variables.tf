@@ -183,3 +183,9 @@ variable "configuration_data" {
   description = "data value for configuration"
   default     = null
 }
+
+variable "broker_name" {
+  type = string
+  description = "name for the MQ broker if module ID is not available"
+  default = null
+}

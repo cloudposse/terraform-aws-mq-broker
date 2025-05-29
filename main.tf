@@ -88,8 +88,8 @@ locals {
 
 resource "aws_mq_configuration" "default" {
   count          = local.enabled ? length(local.configuration_data_create) : 0
-  description    = "Rabbitmq Configuration for ${module.this.id}"
-  name           = "${module.this.id}_default_config"
+  description    = "Rabbitmq Configuration for ${length(module.this.id) > 0 ? module.this.id : var.broker_name}"
+  name           = "${length(module.this.id) > 0 ? module.this.id : var.broker_name}_default_config"
   engine_type    = var.engine_type
   engine_version = var.engine_version
   data           = var.configuration_data
@@ -97,7 +97,7 @@ resource "aws_mq_configuration" "default" {
 
 resource "aws_mq_broker" "default" {
   count                      = local.enabled ? 1 : 0
-  broker_name                = module.this.id
+  broker_name                = length(module.this.id) > 0 ? module.this.id : var.broker_name
   deployment_mode            = var.deployment_mode
   engine_type                = var.engine_type
   engine_version             = var.engine_version
