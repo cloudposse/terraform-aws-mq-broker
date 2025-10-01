@@ -16,7 +16,7 @@ deployment_mode = "ACTIVE_STANDBY_MULTI_AZ"
 
 engine_type = "ActiveMQ"
 
-engine_version = "5.17.6"
+engine_version = "5.18"
 
 # https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/broker-instance-types.html
 
