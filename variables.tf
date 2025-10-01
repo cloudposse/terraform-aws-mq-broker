@@ -12,7 +12,7 @@ variable "auto_minor_version_upgrade" {
 
 variable "deployment_mode" {
   type        = string
-  description = "The deployment mode of the broker. Supported: SINGLE_INSTANCE and ACTIVE_STANDBY_MULTI_AZ"
+  description = "The deployment mode of the broker. Supported: SINGLE_INSTANCE and ACTIVE_STANDBY_MULTI_AZ, and CLUSTER_MULTI_AZ"
   default     = "ACTIVE_STANDBY_MULTI_AZ"
 }
 
