@@ -106,6 +106,12 @@ variable "subnet_ids" {
   description = "List of VPC subnet IDs"
 }
 
+variable "ssm_parameters_enabled" {
+  type        = bool
+  description = "Whether to create SSM parameters for MQ users and passwords"
+  default     = true
+}
+
 variable "ssm_parameter_name_format" {
   type        = string
   description = "SSM parameter name format"
