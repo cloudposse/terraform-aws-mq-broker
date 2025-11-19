@@ -115,7 +115,7 @@ variable "ssm_parameters_enabled" {
 variable "ssm_parameter_name_format" {
   type        = string
   description = "SSM parameter name format"
-  default     = "/%s/%s"
+  default     = "/%s/%s/%s"
 }
 
 variable "ssm_path" {
